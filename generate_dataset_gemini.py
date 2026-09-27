@@ -298,10 +298,18 @@ def build_user_prompt(scenario: dict) -> str:
 
 
 class DatasetGenerator:
-    """Gemini API를 이용한 대화 데이터셋 생성기 (google-genai 우선 사용)"""
-    def __init__(self, api_key: str, model_name: str = "gemini-flash-latest"):
+    """Gemini API를 이용한 대화 데이터셋 생성기 (다중 모델 폴백 풀 지원)"""
+    def __init__(self, api_key: str, model_name: str = "gemini-3-flash-preview"):
         self.api_key = api_key
-        self.model_name = model_name
+        # 쿼터 분산을 위한 모델 풀 구성
+        self.model_pool = ["gemini-3-flash-preview", "gemini-3.1-flash-lite-preview", "gemini-flash-latest"]
+        if model_name in self.model_pool:
+            self.model_pool.remove(model_name)
+            self.model_pool.insert(0, model_name)
+        else:
+            self.model_pool.insert(0, model_name)
+            
+        self.current_model_idx = 0
         self.use_new_sdk = False
 
         try:
@@ -310,25 +318,29 @@ class DatasetGenerator:
             self.client = genai.Client(api_key=self.api_key)
             self.genai_types = types
             self.use_new_sdk = True
-            print(f" - [초기화] 최신 google-genai SDK 클라이언트를 사용합니다. (모델: {self.model_name})")
+            print(f" - [초기화] 최신 google-genai SDK 클라이언트를 사용합니다. (기본 모델: {self.current_model})")
         except ImportError:
             import google.generativeai as legacy_genai
             legacy_genai.configure(api_key=self.api_key)
-            self.legacy_model = legacy_genai.GenerativeModel(
-                model_name=self.model_name,
-                system_instruction=SYSTEM_PROMPT,
-                generation_config={
-                    "temperature": 0.7,
-                    "response_mime_type": "application/json"
-                }
-            )
-            print(f" - [초기화] 레거시 google-generativeai SDK 클라이언트를 사용합니다. (모델: {self.model_name})")
+            self.legacy_genai = legacy_genai
+            print(f" - [초기화] 레거시 google-generativeai SDK 클라이언트를 사용합니다. (기본 모델: {self.current_model})")
+
+    @property
+    def current_model(self):
+        return self.model_pool[self.current_model_idx % len(self.model_pool)]
+
+    def switch_to_next_model(self):
+        self.current_model_idx += 1
+        new_model = self.current_model
+        print(f"    -> [모델 전환] 다음 가용 모델로 자동 전환합니다: {new_model}")
+        return new_model
 
     def generate_single(self, scenario: dict, max_retries: int = 5) -> list:
-        """단일 시나리오에 대해 대화 턴 목록 생성 및 검증 (재시도 로직 포함)"""
+        """단일 시나리오에 대해 대화 턴 목록 생성 및 검증 (재시도 및 모델 폴백 포함)"""
         prompt = build_user_prompt(scenario)
 
         for attempt in range(1, max_retries + 1):
+            active_model = self.current_model
             try:
                 if self.use_new_sdk:
                     config = self.genai_types.GenerateContentConfig(
@@ -337,13 +349,21 @@ class DatasetGenerator:
                         response_mime_type="application/json"
                     )
                     response = self.client.models.generate_content(
-                        model=self.model_name,
+                        model=active_model,
                         contents=prompt,
                         config=config
                     )
                     text = response.text.strip()
                 else:
-                    response = self.legacy_model.generate_content(prompt)
+                    legacy_m = self.legacy_genai.GenerativeModel(
+                        model_name=active_model,
+                        system_instruction=SYSTEM_PROMPT,
+                        generation_config={
+                            "temperature": 0.7,
+                            "response_mime_type": "application/json"
+                        }
+                    )
+                    response = legacy_m.generate_content(prompt)
                     text = response.text.strip()
 
                 # JSON 파싱
@@ -369,6 +389,12 @@ class DatasetGenerator:
                 is_transient = any(k in err_msg for k in ["503", "429", "ResourceExhausted", "RESOURCE_EXHAUSTED", "UNAVAILABLE", "nodename nor servname", "Connection", "timeout", "Temporary"])
                 if attempt < max_retries and is_transient:
                     import re, time
+                    # 429 Quota인 경우 다른 모델로 즉시 교체 시도
+                    if "429" in err_msg or "ResourceExhausted" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
+                        self.switch_to_next_model()
+                        time.sleep(1.0)
+                        continue
+
                     delay_match = re.search(r"retry\s+in\s+([\d\.]+)\s*s", err_msg, re.IGNORECASE) or re.search(r"retryDelay['\"]?:\s*['\"]?(\d+)s", err_msg)
                     if delay_match:
                         wait_time = int(float(delay_match.group(1))) + 2
@@ -376,8 +402,8 @@ class DatasetGenerator:
                         wait_time = 10  # 네트워크 일시 단절 대기
                         print(f"    [인터넷 연결 일시 단절 감지, 네트워크 재연결 대기 ({wait_time}초)...]")
                     else:
-                        wait_time = attempt * 15
-                    print(f"    [일시적 부하/제한/네트워크 이슈, {wait_time}초 대기 후 자동 재시도 ({attempt}/{max_retries})]")
+                        wait_time = attempt * 10
+                    print(f"    [일시적 부하/네트워크 이슈, {wait_time}초 대기 후 자동 재시도 ({attempt}/{max_retries})]")
                     time.sleep(wait_time)
                 else:
                     raise e
@@ -389,9 +415,10 @@ def main():
     parser.add_argument("--output", type=str, default="./ktas_train_dataset.jsonl", help="저장할 JSONL 파일 경로")
     parser.add_argument("--target_level", type=int, default=None, choices=[1, 2, 3, 4, 5], help="특정 KTAS 레벨만 강제 생성 (1~5)")
     parser.add_argument("--group", type=str, default=None, choices=["adult", "pediatric"], help="성인/소아 강제 지정")
-    parser.add_argument("--model", type=str, default="gemini-flash-latest", help="사용할 Gemini 모델명 (기본: gemini-flash-latest)")
+    parser.add_argument("--model", type=str, default="gemini-3-flash-preview", help="사용할 Gemini 모델명 (기본: gemini-3-flash-preview)")
     parser.add_argument("--sleep", type=float, default=1.0, help="호출 간 딜레이 초 (기본: 1.0초)")
     parser.add_argument("--no_pretty", action="store_true", help="한 줄 포맷으로 저장 (기본값은 가독성을 위한 들여쓰기 적용)")
+    parser.add_argument("--topup_to", type=int, default=None, help="기존 파일의 데이터를 읽어 목표 총 건수까지 등급별 부족분을 자동 계산해 채움")
     parser.add_argument("--dry_run", action="store_true", help="API 호출 없이 샘플러만 테스트")
     args = parser.parse_args()
 
@@ -425,14 +452,42 @@ def main():
 
     output_path = Path(args.output)
     print(f" - 출력 파일: {output_path.resolve()}")
-    print(f" - 생성 예정 샘플 수: {args.num_samples}건")
 
-    # 레벨별 균등 분배 계획 수립 (예: 100건 -> 각 등급별 20건씩)
-    if args.target_level is not None:
+    # 기존 파일 분석
+    existing_records = []
+    from collections import Counter
+    if output_path.exists():
+        with open(output_path, "r", encoding="utf-8") as f:
+            text = f.read().strip()
+            parts = [p.strip() for p in text.split("\n\n") if p.strip().startswith("{")]
+            for p in parts:
+                try:
+                    existing_records.append(json.loads(p))
+                except Exception:
+                    pass
+
+    existing_counts = Counter([r.get("scenario_metadata", {}).get("target_level") for r in existing_records])
+    existing_total = len(existing_records)
+    print(f" - 기존 누적 데이터: 총 {existing_total}건 (1단계:{existing_counts[1]}, 2단계:{existing_counts[2]}, 3단계:{existing_counts[3]}, 4단계:{existing_counts[4]}, 5단계:{existing_counts[5]})")
+
+    # 레벨별 분배 계획 수립
+    if args.topup_to is not None:
+        target_total = args.topup_to
+        target_per_level = target_total // 5
+        planned_levels = []
+        for lvl in range(1, 6):
+            needed = max(0, target_per_level - existing_counts[lvl])
+            planned_levels.extend([lvl] * needed)
+        # 부족분 합계가 남으면 고르게 분배
+        remaining_needed = max(0, target_total - (existing_total + len(planned_levels)))
+        for i in range(remaining_needed):
+            planned_levels.append((i % 5) + 1)
+        random.shuffle(planned_levels)
+        print(f" - [Top-up 모드] 목표 {target_total}건을 채우기 위해 부족분 {len(planned_levels)}건을 추가 생성합니다.")
+    elif args.target_level is not None:
         planned_levels = [args.target_level] * args.num_samples
         print(f" - 목표 레벨: {args.target_level}단계 고정 ({args.num_samples}건)")
     else:
-        # 1~5단계 균등 분배 후 셔플
         base_count = args.num_samples // 5
         remainder = args.num_samples % 5
         planned_levels = []
@@ -441,10 +496,9 @@ def main():
         for i in range(remainder):
             planned_levels.append((i % 5) + 1)
         random.shuffle(planned_levels)
-        from collections import Counter
-        counts = Counter(planned_levels)
-        print(f" - 등급별 균형 계획: 1단계({counts[1]}건), 2단계({counts[2]}건), 3단계({counts[3]}건), 4단계({counts[4]}건), 5단계({counts[5]}건)")
 
+    planned_counts = Counter(planned_levels)
+    print(f" - 이번 생성 계획 ({len(planned_levels)}건): 1단계({planned_counts[1]}건), 2단계({planned_counts[2]}건), 3단계({planned_counts[3]}건), 4단계({planned_counts[4]}건), 5단계({planned_counts[5]}건)")
     print(f" - 호출 간 간격: {args.sleep}초 | 실시간 디스크 flush 활성화\n")
 
     success_count = 0
@@ -487,8 +541,31 @@ def main():
                 time.sleep(10)
 
     print(f"\n" + "=" * 60)
-    print(f"생성 완료: 총 {success_count}/{args.num_samples}건 정상 기록됨")
+    print(f"생성 완료: 총 {success_count}/{total_target}건 정상 기록됨")
     print(f"저장 위치: {output_path.resolve()}")
+
+    # raw jsonl 및 json 배열 파일 자동 동기화
+    try:
+        with open(output_path, "r", encoding="utf-8") as f:
+            full_text = f.read().strip()
+        all_parts = [p.strip() for p in full_text.split("\n\n") if p.strip().startswith("{")]
+        all_recs = []
+        for p in all_parts:
+            try:
+                all_recs.append(json.loads(p))
+            except Exception:
+                pass
+
+        with open(output_path.parent / "ktas_train_dataset_raw.jsonl", "w", encoding="utf-8") as f:
+            for r in all_recs:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+        with open(output_path.parent / "ktas_train_dataset.json", "w", encoding="utf-8") as f:
+            json.dump(all_recs, f, ensure_ascii=False, indent=2)
+
+        print(f" - [동기화 완료] 총 누적 {len(all_recs)}건 (ktas_train_dataset_raw.jsonl & ktas_train_dataset.json 갱신 완료)")
+    except Exception as e:
+        print(f" - [동기화 오류]: {e}")
 
 
 if __name__ == "__main__":
