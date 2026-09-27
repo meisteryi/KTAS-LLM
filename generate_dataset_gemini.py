@@ -335,8 +335,8 @@ class DatasetGenerator:
         print(f"    -> [모델 전환] 다음 가용 모델로 자동 전환합니다: {new_model}")
         return new_model
 
-    def generate_single(self, scenario: dict, max_retries: int = 5) -> list:
-        """단일 시나리오에 대해 대화 턴 목록 생성 및 검증 (재시도 및 모델 폴백 포함)"""
+    def generate_single(self, scenario: dict, max_retries: int = 3) -> list:
+        """단일 시나리오에 대해 대화 턴 목록 생성 및 검증 (최대 3회 재시도, 실패 시 3초 대기)"""
         prompt = build_user_prompt(scenario)
 
         for attempt in range(1, max_retries + 1):
@@ -385,38 +385,25 @@ class DatasetGenerator:
 
             except Exception as e:
                 err_msg = str(e)
-                # 429/503/네트워크 일시 단절 처리
-                is_transient = any(k in err_msg for k in ["503", "429", "ResourceExhausted", "RESOURCE_EXHAUSTED", "UNAVAILABLE", "nodename nor servname", "Connection", "timeout", "Temporary"])
-                if attempt < max_retries and is_transient:
-                    import re, time
-                    # 429 Quota인 경우 다른 모델로 즉시 교체 시도
+                if attempt < max_retries:
+                    import time
+                    # 429 Quota인 경우 다른 가용 모델로 전환
                     if "429" in err_msg or "ResourceExhausted" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
                         self.switch_to_next_model()
-                        time.sleep(1.0)
-                        continue
-
-                    delay_match = re.search(r"retry\s+in\s+([\d\.]+)\s*s", err_msg, re.IGNORECASE) or re.search(r"retryDelay['\"]?:\s*['\"]?(\d+)s", err_msg)
-                    if delay_match:
-                        wait_time = int(float(delay_match.group(1))) + 2
-                    elif "nodename nor servname" in err_msg or "Connection" in err_msg:
-                        wait_time = 10  # 네트워크 일시 단절 대기
-                        print(f"    [인터넷 연결 일시 단절 감지, 네트워크 재연결 대기 ({wait_time}초)...]")
-                    else:
-                        wait_time = attempt * 10
-                    print(f"    [일시적 부하/네트워크 이슈, {wait_time}초 대기 후 자동 재시도 ({attempt}/{max_retries})]")
-                    time.sleep(wait_time)
+                    
+                    time.sleep(3.0)  # 지시사항: 실패 시 3초 대기 후 재시도
                 else:
                     raise e
 
 
 def main():
     parser = argparse.ArgumentParser(description="KTAS 멀티턴 대화형 SFT 학습 데이터셋 생성기")
-    parser.add_argument("--num_samples", type=int, default=100, help="생성할 샘플 개수 (기본값: 100)")
+    parser.add_argument("--num_samples", type=int, default=1500, help="생성할 샘플 개수 (기본값: 1500)")
     parser.add_argument("--output", type=str, default="./ktas_train_dataset.jsonl", help="저장할 JSONL 파일 경로")
     parser.add_argument("--target_level", type=int, default=None, choices=[1, 2, 3, 4, 5], help="특정 KTAS 레벨만 강제 생성 (1~5)")
     parser.add_argument("--group", type=str, default=None, choices=["adult", "pediatric"], help="성인/소아 강제 지정")
     parser.add_argument("--model", type=str, default="gemini-3-flash-preview", help="사용할 Gemini 모델명 (기본: gemini-3-flash-preview)")
-    parser.add_argument("--sleep", type=float, default=1.0, help="호출 간 딜레이 초 (기본: 1.0초)")
+    parser.add_argument("--sleep", type=float, default=0.8, help="호출 간 딜레이 초 (기본: 0.8초)")
     parser.add_argument("--no_pretty", action="store_true", help="한 줄 포맷으로 저장 (기본값은 가독성을 위한 들여쓰기 적용)")
     parser.add_argument("--topup_to", type=int, default=None, help="기존 파일의 데이터를 읽어 목표 총 건수까지 등급별 부족분을 자동 계산해 채움")
     parser.add_argument("--dry_run", action="store_true", help="API 호출 없이 샘플러만 테스트")
@@ -447,7 +434,7 @@ def main():
         sys.exit(1)
 
     # 3. 데이터셋 생성기 초기화
-    print(f"\n[3] Gemini 모델 초기화 (모델: {args.model})")
+    print(f"\n[3] Gemini 모델 초기화 (기본 모델: {args.model})")
     generator = DatasetGenerator(api_key=api_key, model_name=args.model)
 
     output_path = Path(args.output)
@@ -470,7 +457,7 @@ def main():
     existing_total = len(existing_records)
     print(f" - 기존 누적 데이터: 총 {existing_total}건 (1단계:{existing_counts[1]}, 2단계:{existing_counts[2]}, 3단계:{existing_counts[3]}, 4단계:{existing_counts[4]}, 5단계:{existing_counts[5]})")
 
-    # 레벨별 분배 계획 수립
+    # 레벨별 분배 계획 수립 (기본: 1~5단계 균등 분배)
     if args.topup_to is not None:
         target_total = args.topup_to
         target_per_level = target_total // 5
@@ -478,7 +465,6 @@ def main():
         for lvl in range(1, 6):
             needed = max(0, target_per_level - existing_counts[lvl])
             planned_levels.extend([lvl] * needed)
-        # 부족분 합계가 남으면 고르게 분배
         remaining_needed = max(0, target_total - (existing_total + len(planned_levels)))
         for i in range(remaining_needed):
             planned_levels.append((i % 5) + 1)
@@ -499,23 +485,20 @@ def main():
 
     planned_counts = Counter(planned_levels)
     print(f" - 이번 생성 계획 ({len(planned_levels)}건): 1단계({planned_counts[1]}건), 2단계({planned_counts[2]}건), 3단계({planned_counts[3]}건), 4단계({planned_counts[4]}건), 5단계({planned_counts[5]}건)")
-    print(f" - 호출 간 간격: {args.sleep}초 | 실시간 디스크 flush 활성화\n")
+    print(f" - 호출 간 간격: {args.sleep}초 | 실시간 디스크 flush 활성화 (10건 단위 간략 출력)\n")
 
     success_count = 0
-    total_target = args.num_samples
+    total_target = len(planned_levels)
     pending_levels = list(planned_levels)
 
     with open(output_path, "a", encoding="utf-8") as f:
-        attempt_idx = 0
         while pending_levels:
             lvl = pending_levels[0]
-            attempt_idx += 1
             scenario = sampler.sample(target_level=lvl, force_group=args.group)
-            print(f"[{success_count + 1}/{total_target}] KTAS {scenario['target_level']}단계 ({scenario['urgency']}) | {scenario['age_group']} ({scenario['age']}세/{scenario['gender']}) | {scenario['chief_complaint_name']} 생성 시도...")
 
             try:
-                turns = generator.generate_single(scenario)
-                timestamp_id = datetime.now().strftime("%Y%m%d_%H%M%S") + f"_{success_count+1:04d}"
+                turns = generator.generate_single(scenario, max_retries=3)
+                timestamp_id = datetime.now().strftime("%Y%m%d_%H%M%S") + f"_{existing_total + success_count + 1:05d}"
                 record = {
                     "id": f"ktas_{timestamp_id}",
                     "scenario_metadata": scenario,
@@ -531,14 +514,17 @@ def main():
                 
                 pending_levels.pop(0)  # 성공 시 큐에서 제거
                 success_count += 1
-                print(f" -> 성공 (총 {len(turns)}턴 대화 저장 완료 | 전체 진행: {success_count}/{total_target})")
+                
+                # 10건 단위 또는 1번째 건, 마지막 건 출력
+                if success_count % 10 == 0 or success_count == 1 or success_count == total_target:
+                    print(f"[{success_count}/{total_target}] {scenario['age_group']} {scenario['chief_complaint_name']} KTAS {scenario['target_level']}단계 완료")
                 
                 import time
                 time.sleep(args.sleep)
             except Exception as e:
-                print(f" -> [실패 후 10초 대기 재시도]: {e}")
+                print(f"    [오류 발생 / 3초 대기 재시도]: {e}")
                 import time
-                time.sleep(10)
+                time.sleep(3.0)
 
     print(f"\n" + "=" * 60)
     print(f"생성 완료: 총 {success_count}/{total_target}건 정상 기록됨")
