@@ -1,0 +1,252 @@
+{
+  "module": "KTAS_Part1_Common_Evaluation_Framework",
+  "version": "KTAS 2021 Ver 1.6",
+  "level_definitions": {
+    "1": {
+      "name": "소생",
+      "definition": "즉각적인 처치가 필요한 생명 위협 상태"
+    },
+    "2": {
+      "name": "긴급",
+      "definition": "생명, 사지, 신체 기능에 잠재적 위협이 있는 상태"
+    },
+    "3": {
+      "name": "응급",
+      "definition": "진료가 필요하며 악화될 가능성이 있는 상태"
+    },
+    "4": {
+      "name": "준응급",
+      "definition": "나이, 통증, 악화 가능성 등을 고려할 때 1~2시간 내 치료 권장"
+    },
+    "5": {
+      "name": "비응급",
+      "definition": "긴급하지 않으며 만성적이거나 경미한 상태"
+    }
+  },
+  "adult_first_order_modifiers": {
+    "target_age": ">= 15세",
+    "consciousness": [
+      {
+        "ktas_level": 1,
+        "classification": "무의식",
+        "gcs_range": "3-8",
+        "avpu": "U",
+        "criteria": "기도를 스스로 유지할 수 없거나 지속적인 발작 또는 의식수준의 점진적인 악화를 보이는 경우"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "의식수준의 변화",
+        "gcs_range": "9-13",
+        "avpu": "V/P",
+        "criteria": "사람, 장소 및 시간에 대한 지남력 상실, 최근 기억 상실, 새로 발생한 착란, 초조"
+      }
+    ],
+    "hemodynamics": [
+      {
+        "ktas_level": 1,
+        "classification": "쇼크",
+        "criteria": "중증 종말 기관(end-organ) 순환 부전의 증거. 약한 맥박, 심각한 빈맥 또는 서맥, 의식 저하, 패혈성 쇼크(홍조, 고열, toxic appearance)"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "혈역학적 장애",
+        "criteria": "경계성(borderline) 관류의 증거. 설명되지 않는 빈맥, 기립성 저혈압, 저혈압 의심(평소 정상치보다 뚜렷하게 낮은 경우 포함)"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "비정상 맥박수이지만 혈역학적으로 안정",
+        "criteria": "주증상과 관련하여 정상 활력징후의 상한치 또는 하한치를 보이며 관류는 유지되는 상태"
+      }
+    ],
+    "respiratory": [
+      {
+        "ktas_level": 1,
+        "classification": "중증 호흡곤란",
+        "spo2": "< 90% (급성 발병)",
+        "criteria": "과도한 호흡노력으로 피로한 상태, 청색증, 한 단어 정도만 말할 수 있음, 대화 불가, 상기도 폐쇄, 기면/착란, 기도삽관 또는 호흡보조 필요"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "중등도 호흡곤란",
+        "spo2": "< 92% (급성 발병) 또는 < 90% (만성 발병)",
+        "pefr": "< 40%",
+        "criteria": "증가된 호흡 노력, 구문이나 끊어진 문장으로 말함, 기도는 유지되나 협착음(stridor)이 심하거나 악화되는 상태"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "경증 호흡곤란",
+        "spo2": "92-94%",
+        "pefr": "40-60%",
+        "criteria": "숨참, 빈호흡, 운동 시 호흡곤란, 호흡노력 증가 없음, 완전한 문장 구사 가능, 명백한 기도폐쇄 없는 협착음"
+      }
+    ],
+    "temperature_sepsis": [
+      {
+        "ktas_level": 2,
+        "classification": "열, 면역저하 상태",
+        "criteria": "체온 > 38.0°C이면서 중성구감소증(또는 의증), 항암화학요법, 스테로이드 등 면역억제제 복용 중인 경우"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "패혈증 의증",
+        "criteria": "3개 이상의 SIRS 기준 만족 또는 혈역학적 이상, 중등도 호흡곤란, 의식수준 변화 동반"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "전신염증반응증후군(SIRS)",
+        "criteria": "열을 포함한 2개의 SIRS 기준 만족 (SIRS 기준: 체온 >38°C or <36°C, 심박수 >90, 호흡수 >20 or PaCO2 <32torr, WBC >12000 or <4000 or >10% bands)"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "열(아파 보임)",
+        "criteria": "SIRS 기준 중 열이 있으면서 아파 보이는 상태 (홍조, 기면, 불안 또는 초조)"
+      },
+      {
+        "ktas_level": 4,
+        "classification": "열(건강해 보임)",
+        "criteria": "SIRS 기준 중 열만 있고 곤란함 없이 편안해 보이는 상태"
+      }
+    ],
+    "bleeding_disorder": [
+      {
+        "ktas_level": 2,
+        "classification": "출혈성 질환 - 위급한 출혈",
+        "criteria": "혈우병, 혈소판 감소증, 와파린/항혈소판제 복용 중 생명 혹은 사지를 소실할 정도의 출혈 (두개내, 경부, 흉부, 복부, 골반, 척추, 대량 질출혈, 구획증후군 등)"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "출혈성 질환 - 경도/중등도 출혈",
+        "criteria": "출혈 질환 기저 환자의 코피, 입/잇몸 출혈, 관절혈증, 월경과다, 찰과상/단순 열상"
+      }
+    ],
+    "high_risk_mechanism": [
+      {
+        "ktas_level": 2,
+        "classification": "고위험성 사고기전",
+        "criteria": "자동차사고(차량 이탈, 전복, 20분이상 구조, 탑승공간 함입, 동승자 사망, 안전벨트 미착용 충돌 >40km/h or 착용 >60km/h), 오토바이사고 >30km/h 충돌/튕겨져 나감, 보행자/자전거 충돌 >10km/h, 추락 >6m(소아 >1m) or 5계단, 머리/경부/몸통/팔다리 근위부 관통상"
+      }
+    ],
+    "psychiatric_emergency_criteria": {
+      "suicide": {
+        "level_2": [
+          "자살시도 (죽으려는 의도에 따른 노골적/암시적 행동)",
+          "뚜렷한 자살의도 (자살로 이어질 수 있는 주관적 바람)",
+          "도주의 가능성이나 안전에 대한 위험"
+        ],
+        "level_3": ["구체적인 계획이 없는 자살관념"],
+        "level_4": ["우울함 호소, 자살 생각 없음"]
+      },
+      "agitation_anxiety": {
+        "level_2": [
+          "빈맥과 초조함을 동반한 극도의 불안이나 흥분, 협조 요청에도 진정되지 않음"
+        ],
+        "level_3": [
+          "명백한 불안이나 초조, 일관성 있게 지시를 따르지 못함 (빈맥/떨림 없음)"
+        ],
+        "level_4": ["가벼운 불안, 안심시키면 나아짐, 지시에 협조적임"]
+      },
+      "bizarre_behavior": {
+        "level_1": [
+          "조절되지 않는 행동 (기이하고 지남력 없으며 언어로 조절 불가, 자해/타해 위험)"
+        ],
+        "level_3": [
+          "조절되는 행동 (비이성적이나 합리적 설득 가능, 보호자 동반)"
+        ],
+        "level_4": [
+          "해롭지 않은 행동 (장기간 지속, 급격한 변화 없으며 위험성 없음)"
+        ]
+      }
+    }
+  },
+  "pediatric_first_order_modifiers": {
+    "target_age": "< 15세",
+    "critical_look": [
+      "전반적인 상태 (Appearance)",
+      "호흡 노력 (Work of Breathing)",
+      "순환 상태 (Circulation to Skin)"
+    ],
+    "consciousness": [
+      {
+        "ktas_level": 1,
+        "classification": "무의식",
+        "criteria": "반응 없음, 큰 소음/통증에 무의미한 움직임, 굴곡/신전 경직 자세, 지속되는 발작, 기도 유지 불가"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "의식수준의 변화",
+        "criteria": "평소 상태에서 변화, 기면, 둔감, 국소적 통증 반응, 착란, 지남력 상실, 달랠 수 없고 잘 먹지 않는 영아"
+      }
+    ],
+    "hemodynamics": [
+      {
+        "ktas_level": 1,
+        "classification": "쇼크",
+        "criteria": "매우 창백함, 차가운 피부, 발한, 약한 맥박, 저혈압, 체위성 실신, 심한 빈맥/서맥, 비효과적 환기, toxic appearance"
+      },
+      {
+        "ktas_level": 2,
+        "classification": "혈역학적 장애",
+        "criteria": "모세혈관 재충혈 지연, 빈맥, 소변량 감소, 탈수 의심 (소아는 혈압 유지가 오래되므로 저혈압 이전 징후 중요)"
+      },
+      {
+        "ktas_level": 3,
+        "classification": "체액량 부족",
+        "criteria": "비정상 활력징후에 동반된 체액량 부족 상태"
+      }
+    ],
+    "temperature": [
+      {
+        "ktas_level": 2,
+        "age_range": "< 3개월",
+        "criteria": "체온 < 36.0°C 또는 >= 38.0°C"
+      },
+      {
+        "ktas_level": 2,
+        "age_range": "3-18개월",
+        "criteria": "체온 >= 38.0°C 이고 아파 보임"
+      },
+      {
+        "ktas_level": 3,
+        "age_range": "3-18개월",
+        "criteria": "체온 >= 38.0°C 이고 건강해 보임"
+      },
+      {
+        "ktas_level": 3,
+        "age_range": "> 18개월",
+        "criteria": "체온 >= 38.0°C 이고 아파 보임"
+      },
+      {
+        "ktas_level": 4,
+        "age_range": "> 18개월",
+        "criteria": "체온 >= 38.0°C 이지만 건강해 보임"
+      }
+    ]
+  },
+  "pain_decision_matrix": {
+    "central_pain": {
+      "definition": "체강이나 내부 장기에서 기원하는 통증 (생명/사지 소실 위험 관련)",
+      "acute": {
+        "severe_8_to_10": { "ktas_level": 2 },
+        "moderate_4_to_7": { "ktas_level": 3 },
+        "mild_under_4": { "ktas_level": 4 }
+      },
+      "chronic": {
+        "severe_8_to_10": { "ktas_level": 3 },
+        "moderate_4_to_7": { "ktas_level": 4 },
+        "mild_under_4": { "ktas_level": 5 }
+      }
+    },
+    "peripheral_pain": {
+      "definition": "피부, 연조직, 근골격계 또는 표재성 기관 기원 통증 (단, 위험 징후 시 중심성으로 재평가)",
+      "acute": {
+        "severe_8_to_10": { "ktas_level": 3 },
+        "moderate_4_to_7": { "ktas_level": 4 },
+        "mild_under_4": { "ktas_level": 5 }
+      },
+      "chronic": {
+        "severe_8_to_10": { "ktas_level": 4 },
+        "mild_to_moderate_under_8": { "ktas_level": 5 }
+      }
+    }
+  }
+}

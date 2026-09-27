@@ -1,0 +1,1161 @@
+{
+  "module": "KTAS_Part4_Adult_Sensory_General_Systems",
+  "target_population": "Adult (>= 15 years)",
+  "categories": {
+    "eye": {
+      "category_name": "눈",
+      "complaints": {
+        "502": {
+          "name": "눈의 화학물질 노출",
+          "nacrs_code": "502",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "눈의 화학물질 노출 (조기 세척 및 즉각 진료 필요)"
+            }
+          ]
+        },
+        "503": {
+          "name": "눈의 이물질",
+          "nacrs_code": "503",
+          "notes": "각막의 찰과상과 이물질을 포함함.",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "이물질의 안구 관통" },
+            { "ktas_level": 2, "condition": "급성 또는 갑작스런 시력변화" },
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            { "ktas_level": 4, "condition": "급성 말초성 중등도 통증 (4-7)" },
+            { "ktas_level": 5, "condition": "급성 말초성 경증 통증 (<4)" }
+          ]
+        },
+        "504": {
+          "name": "시력장애",
+          "nacrs_code": "504",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "급성 / 갑작스런 시력변화" },
+            { "ktas_level": 4, "condition": "만성 / 점진적 시력변화" }
+          ]
+        },
+        "505": {
+          "name": "눈 통증",
+          "nacrs_code": "505",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "급성 중심성 중증 통증 (8-10)" },
+            { "ktas_level": 2, "condition": "급성 / 갑작스런 시력 장애" },
+            {
+              "ktas_level": 3,
+              "condition": "중심성 통증 3단계 또는 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "중심성 통증 4단계 또는 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "눈 통증, 만성 경증 (<4)" }
+          ]
+        },
+        "506": {
+          "name": "눈 충혈 / 분비물",
+          "nacrs_code": "506",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "말초성 통증 3단계 (8-10), 급성" },
+            { "ktas_level": 4, "condition": "눈 충혈 / 분비물, 급성" },
+            { "ktas_level": 4, "condition": "말초성 통증, 만성 4단계" },
+            {
+              "ktas_level": 5,
+              "condition": "눈 충혈 / 분비물, 만성 (통증 경미)"
+            }
+          ]
+        },
+        "507": {
+          "name": "눈부심",
+          "nacrs_code": "507",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "급성 중심성 중증 통증 (8-10)" },
+            { "ktas_level": 3, "condition": "급성 중심성 중등도 통증 (4-7)" },
+            { "ktas_level": 4, "condition": "눈부심, 경증 통증 (<4)" }
+          ]
+        },
+        "508": {
+          "name": "복시",
+          "nacrs_code": "508",
+          "notes": "만약 뇌졸중을 의심해야 하면 '신경계 - 뇌졸중 증상'으로 이동",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 발병 복시" },
+            { "ktas_level": 4, "condition": "만성 복시" }
+          ]
+        },
+        "509": {
+          "name": "안와주위 부종",
+          "nacrs_code": "509",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "안와주위 부종 (경증 통증 <4)" }
+          ]
+        },
+        "510": {
+          "name": "눈의 외상",
+          "nacrs_code": "510",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "중심성 통증 2단계, 출혈성 질환 2단계, 사고기전 2단계"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "관통 손상이나 화학물질, 직접적인 고열에 의한 손상"
+            },
+            { "ktas_level": 2, "condition": "둔상에 의한 시력소실" },
+            { "ktas_level": 2, "condition": "급성 / 갑작스런 시력 장애" },
+            {
+              "ktas_level": 2,
+              "condition": "분류 담당자가 눈을 확인할 수 없는 상태"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "중심성 통증 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "눈의 외상, 급성 중심성 경증 통증 (<4)"
+            }
+          ]
+        }
+      }
+    },
+    "nose": {
+      "category_name": "코",
+      "complaints": {
+        "151": {
+          "name": "코피",
+          "nacrs_code": "151",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급한 출혈)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "적절한 압박에도 멈추지 않는 코피"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            { "ktas_level": 3, "condition": "압박으로 지혈된 코피" },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계" },
+            { "ktas_level": 4, "condition": "급성 코피, 두드러진 출혈은 없음" },
+            {
+              "ktas_level": 5,
+              "condition": "주기적 / 반복적이며 두드러지지 않은 출혈"
+            }
+          ]
+        },
+        "152": {
+          "name": "코막힘",
+          "nacrs_code": "152",
+          "second_order_modifiers": [
+            { "ktas_level": 5, "condition": "코막힘 (단순 증상)" }
+          ]
+        },
+        "153": {
+          "name": "코의 이물질",
+          "nacrs_code": "153",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "중등도 호흡곤란 동반" },
+            { "ktas_level": 2, "condition": "단추형 건전지" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "급성 말초성 경증 통증을 동반한 코의 이물질 (<4)"
+            }
+          ]
+        },
+        "154": {
+          "name": "상기도감염 증상 호소",
+          "nacrs_code": "154",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "건강해 보임, 열 없음" }
+          ]
+        },
+        "155": {
+          "name": "코의 외상",
+          "nacrs_code": "155",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급한 출혈)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "적절한 지혈에도 멈추지 않는 코피"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 말초성 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "말초성 경증 통증 (<4)" }
+          ]
+        }
+      }
+    },
+    "ear": {
+      "category_name": "귀",
+      "complaints": {
+        "051": {
+          "name": "이통 (Earache)",
+          "nacrs_code": "051",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 말초성 중등도 통증 (4-7), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "경증 통증을 동반한 이통 (<4)" }
+          ]
+        },
+        "052": {
+          "name": "귀의 이물질",
+          "nacrs_code": "052",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            { "ktas_level": 4, "condition": "급성 말초성 중등도 통증 (4-7)" },
+            { "ktas_level": 5, "condition": "귀의 이물질, 경증 통증 (<4)" }
+          ]
+        },
+        "053": {
+          "name": "청력소실",
+          "nacrs_code": "053",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "청력소실, 급성 발병 (돌발성 난청 의심)"
+            },
+            { "ktas_level": 5, "condition": "청력소실, 서서히 발병 (만성)" }
+          ]
+        },
+        "054": {
+          "name": "이명",
+          "nacrs_code": "054",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "아스피린 복용 가능성 있음 (살리실산 중독 의심)"
+            },
+            { "ktas_level": 4, "condition": "이명 (단순 이명)" }
+          ]
+        },
+        "055": {
+          "name": "귀의 삼출물",
+          "nacrs_code": "055",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계 만족" }
+          ]
+        },
+        "056": {
+          "name": "귀의 손상",
+          "nacrs_code": "056",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "절단 (이개 부분/완전 절단)" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 말초성 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "창백하거나 청색증을 동반한 동상, 중증"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "색 변화를 동반하지 않은 동상, 경증"
+            },
+            { "ktas_level": 4, "condition": "봉합이 필요한 열상" },
+            { "ktas_level": 5, "condition": "봉합이 불필요한 열상 / 찰과상" },
+            { "ktas_level": 5, "condition": "말초성 경증 통증 (<4)" }
+          ]
+        }
+      }
+    },
+    "mouth_throat_face": {
+      "category_name": "입, 목 / 얼굴",
+      "complaints": {
+        "101": {
+          "name": "치아 / 구강 문제",
+          "nacrs_code": "101",
+          "notes": "구강(혀)의 열상은 '피부 열상/천공'을 참고하여 분류.",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "치아 박리 (Avulsion - 최근 발생, 온전한 치아 존재하여 재식 필요)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "말초성 중증 통증 (8-10) 또는 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "말초성 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "활력징후 정상이며 기저질환 없는 잇몸 출혈"
+            },
+            { "ktas_level": 5, "condition": "치아 / 잇몸 문제, 경증 문제 (<4)" }
+          ]
+        },
+        "102": {
+          "name": "안면 외상",
+          "nacrs_code": "102",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 고위험 사고기전"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 말초성 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "말초성 경증 통증 (<4)" }
+          ]
+        },
+        "103": {
+          "name": "인후통",
+          "nacrs_code": "103",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 급성 중심성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "침흘림 또는 협착음 (급성 후두개염 의심)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "입술, 혀, 입인두의 명백한 부종 / 부기 (기도 폐쇄 위협)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 중심성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 3, "condition": "연하장애" },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "경증 인후통 +/- 후두염" }
+          ]
+        },
+        "104": {
+          "name": "목의 부종 / 통증",
+          "nacrs_code": "104",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 급성 중심성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "경부 강직 / 수막자극증 +/- 열 (수막염 의심)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 중심성 중등도 통증 (4-7)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성 경증 통증 (<4), 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "만성 중심성 경증 통증 (<4)을 동반한 목의 부종 / 통증"
+            }
+          ]
+        },
+        "105": {
+          "name": "목의 외상",
+          "nacrs_code": "105",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성 통증 2단계, 출혈성 질환(위급), 사고기전 2단계"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "이상감각, 신경학적 징후 (척수 손상 의심)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "목쉰소리와 언어장애 (후두/기도 손상 의심)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성 중등도 통증, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 중심성 경증 통증 (<4)"
+            }
+          ]
+        },
+        "106": {
+          "name": "연하장애 / 연하곤란",
+          "nacrs_code": "106",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 급성 중심성 중증 통증 (8-10)"
+            },
+            { "ktas_level": 2, "condition": "침흘림 또는 협착음" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 중심성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 3, "condition": "이물질의 가능성" },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 중심성 경증 통증 (<4)"
+            }
+          ]
+        },
+        "107": {
+          "name": "안면 통증 (비외상성 / 비치아성)",
+          "nacrs_code": "107",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 급성 말초성 중증 통증 (8-10), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 말초성 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "말초성 경증 통증 (<4) 또는 만성 통증"
+            }
+          ]
+        }
+      }
+    },
+    "environmental": {
+      "category_name": "환경손상",
+      "complaints": {
+        "201_frostbite": {
+          "name": "동상 / 한랭손상",
+          "nacrs_code": "201",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "사지 말단부위에 맥박이 없고 차가움"
+            },
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            { "ktas_level": 3, "condition": "피부가 창백함" },
+            {
+              "ktas_level": 4,
+              "condition": "말초성 중등도 통증 (4-7) 또는 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "동상 / 한랭손상 (경증 <4)" }
+          ]
+        },
+        "201_heat": {
+          "name": "온열손상",
+          "nacrs_code": "201",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "1차 활력징후 1단계 또는 중증 탈수"
+            },
+            { "ktas_level": 1, "condition": "중심체온 > 41°C (열사병)" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 중등도 탈수"
+            },
+            { "ktas_level": 2, "condition": "중심체온 39-41°C" },
+            { "ktas_level": 3, "condition": "지속되는 열경련 (Heat cramps)" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 경증 탈수"
+            },
+            { "ktas_level": 4, "condition": "정상 활력징후" },
+            {
+              "ktas_level": 4,
+              "condition": "열경련이 회복된 상태, 탈수에서 호전"
+            }
+          ]
+        },
+        "202": {
+          "name": "유해물질 흡입",
+          "nacrs_code": "202",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "연기나 기타 물질 흡입, 호흡곤란 없음"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "유해물질을 흡입한 후 상당한 시간이 지남, 무증상"
+            }
+          ]
+        },
+        "203": {
+          "name": "전기 손상",
+          "nacrs_code": "203",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "명백한 피부 손상 (고전압/출입구 화상)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 통증 3단계"
+            },
+            { "ktas_level": 3, "condition": "명백한 피부 손상 없음" }
+          ]
+        },
+        "204": {
+          "name": "화학물질 노출",
+          "nacrs_code": "204",
+          "notes": "조기에 오염제거를 하고 물질의 독성 유무를 확인하기 위해 최소한 2단계 이상으로 분류한다.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 1, "condition": "체표면적 25% 이상의 중증 화상" },
+            {
+              "ktas_level": 2,
+              "condition": "손이나 발, 샅고랑 부위, 얼굴의 중증 화상"
+            },
+            { "ktas_level": 2, "condition": "눈에 이물질이 튄 후 증상 있음" },
+            {
+              "ktas_level": 2,
+              "condition": "기타 모든 화학물질 노출 (최소 2단계 원칙)"
+            }
+          ]
+        },
+        "205": {
+          "name": "저체온증",
+          "nacrs_code": "205",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "저체온증, 중심체온 < 32°C" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "중심체온 32-35°C" },
+            { "ktas_level": 4, "condition": "동상 없음, 정상 활력징후" }
+          ]
+        },
+        "206": {
+          "name": "익수",
+          "nacrs_code": "206",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "저체온증 동반, 중심체온 < 32°C" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "중심체온 32-35°C" }
+          ]
+        }
+      }
+    },
+    "skin": {
+      "category_name": "피부",
+      "complaints": {
+        "701": {
+          "name": "물림 (Bite)",
+          "nacrs_code": "701",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "중증 알레르기 반응의 기왕력" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "경증 물림 (<4)" }
+          ]
+        },
+        "702": {
+          "name": "쏘임 (Sting)",
+          "nacrs_code": "702",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "중증 알레르기 반응의 기왕력" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "단순 쏘임 (<4)" }
+          ]
+        },
+        "703": {
+          "name": "찰과상",
+          "nacrs_code": "703",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            {
+              "ktas_level": 4,
+              "condition": "말초성 통증 4단계 또는 출혈이 동반된 찰과상"
+            },
+            { "ktas_level": 5, "condition": "경증 찰과상 (<4)" }
+          ]
+        },
+        "704": {
+          "name": "열상 / 천공",
+          "nacrs_code": "704",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "신경혈관 장애를 동반한 복합창상" },
+            { "ktas_level": 3, "condition": "지속되고 있는 출혈" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 말초성 중증 통증, 출혈성 질환(경도/중등도)"
+            },
+            { "ktas_level": 4, "condition": "지혈되었거나 조절되고 있는 출혈" },
+            { "ktas_level": 4, "condition": "봉합 필요" },
+            { "ktas_level": 5, "condition": "봉합 필요 없음, 경증 통증 (<4)" }
+          ]
+        },
+        "705": {
+          "name": "화상",
+          "nacrs_code": "705",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "체표면적 25% 이상의 화상" },
+            {
+              "ktas_level": 2,
+              "condition": "손, 발, 얼굴, 회음부 부위의 2도 이상의 화상"
+            },
+            { "ktas_level": 3, "condition": "체표면적의 5-25% 화상" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "체표면적 < 5%인 3도 화상 또는 < 10%의 2도 화상"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "경증 화상 (1도 화상 또는 경증 통증)"
+            }
+          ]
+        },
+        "706": {
+          "name": "혈액이나 체액에 노출",
+          "nacrs_code": "706",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "고위험 노출 (감염원 불명 주사침 자상, 에이즈/간염 보균자 자상)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "저위험 노출 (알려진 저위험 감염원의 주사침 자상 또는 체액 튐)"
+            }
+          ]
+        },
+        "707": {
+          "name": "소양증",
+          "nacrs_code": "707",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            { "ktas_level": 4, "condition": "급성 말초성 중등도 통증 (4-7)" },
+            { "ktas_level": 5, "condition": "소양증 (단순 가려움)" }
+          ]
+        },
+        "708": {
+          "name": "발진",
+          "nacrs_code": "708",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "얼굴 연조직염, 안와주위부 포함" },
+            {
+              "ktas_level": 2,
+              "condition": "자반성 또는 점발진, 아파 보임 (수막구균 등 의심)"
+            },
+            { "ktas_level": 3, "condition": "혈관부종 (Angioedema)" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "두드러기 (Urticaria) 또는 국소성 연조직염"
+            },
+            { "ktas_level": 5, "condition": "국소성 발진" }
+          ]
+        },
+        "709": {
+          "name": "국소성 부종 / 발적",
+          "nacrs_code": "709",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "얼굴 연조직염, 특히 안와주위" },
+            { "ktas_level": 2, "condition": "자반성 또는 점발진, 아파 보임" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            { "ktas_level": 4, "condition": "국소성 연조직염" },
+            { "ktas_level": 5, "condition": "국소성 발진 / 부종 (경증)" }
+          ]
+        },
+        "710": {
+          "name": "상처 확인",
+          "nacrs_code": "710",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "일상적인 상처 확인" }
+          ]
+        },
+        "711": {
+          "name": "기타 피부 상태",
+          "nacrs_code": "711",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "기타 피부 상태 (경증)" }
+          ]
+        },
+        "712": {
+          "name": "혹, 돌기, 굳은 살",
+          "nacrs_code": "712",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "혹, 돌기, 굳은 살 (단순 병변)" }
+          ]
+        },
+        "713": {
+          "name": "유방의 발적 / 압통",
+          "nacrs_code": "713",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            }
+          ]
+        },
+        "714": {
+          "name": "감염 가능성 확인",
+          "nacrs_code": "714",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            { "ktas_level": 4, "condition": "급성 말초성 중등도 통증 (4-7)" },
+            { "ktas_level": 5, "condition": "단순 감염 가능성 확인" }
+          ]
+        },
+        "715": {
+          "name": "청색증",
+          "nacrs_code": "715",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "청색증 (말초성 등)" }
+          ]
+        },
+        "716": {
+          "name": "외상없이 저절로 멍듦",
+          "nacrs_code": "716",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "외상없이 저절로 멍듦 (혈소판 이상 의심 등)"
+            }
+          ]
+        },
+        "717": {
+          "name": "피부의 이물질",
+          "nacrs_code": "717",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "피부의 이물질 (경증 통증 <4)" }
+          ]
+        }
+      }
+    },
+    "general": {
+      "category_name": "일반",
+      "complaints": {
+        "851": {
+          "name": "감염성 질환에 노출",
+          "nacrs_code": "851",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 5,
+              "condition": "감염성 질환에 노출 (급성 증상 없음)"
+            }
+          ]
+        },
+        "852": {
+          "name": "열",
+          "nacrs_code": "852",
+          "notes": "환자가 내원 당시 열이 없더라도 발열의 병력이 있으면 적용 가능.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "점발진 (Petechial rash 동반)" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 (면역저하, 패혈증 의증 등)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 (SIRS 2개, 아파 보임)"
+            },
+            { "ktas_level": 4, "condition": "단순 열 (건강해 보임)" }
+          ]
+        },
+        "853": {
+          "name": "고혈당",
+          "nacrs_code": "853",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "혈당 > 324 mg/dL 이면서 탈수/산증 등 관련 증상 있음"
+            },
+            { "ktas_level": 3, "condition": "혈당 > 324 mg/dL, 무증상" }
+          ]
+        },
+        "854": {
+          "name": "저혈당",
+          "nacrs_code": "854",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "혈당 < 54 mg/dL" },
+            {
+              "ktas_level": 2,
+              "condition": "혈당 54-70 mg/dL 이면서 저혈당 증상 동반 (식은땀, 혼미, 발작 등)"
+            },
+            { "ktas_level": 3, "condition": "혈당 54-70 mg/dL 이면서 무증상" }
+          ]
+        },
+        "855": {
+          "name": "전문 진료를 위해서 의뢰된 환자",
+          "nacrs_code": "855",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "STEMI, 초급성 뇌경색 등으로 의뢰된 환자"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "바로 치료가 시작되어야 할 위험수치나 이상소견"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성/말초성 통증 2단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "수술 및 시술, 지속감시가 필요하여 의뢰된 환자"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성/말초성 통증 3단계, 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성/말초성 통증 4단계, 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "전문진료 의뢰되었으나 수술, 시술, 지속감시가 필요 없는 환자"
+            }
+          ]
+        },
+        "856": {
+          "name": "드레싱 교체",
+          "nacrs_code": "856",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "단순 드레싱 교체" }
+          ]
+        },
+        "857": {
+          "name": "스테이플 / 봉합사 제거",
+          "nacrs_code": "857",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "단순 스테이플 / 봉합사 제거" }
+          ]
+        },
+        "858": {
+          "name": "석고 붕대 확인",
+          "nacrs_code": "858",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 신경혈관 장애를 동반함"
+            },
+            { "ktas_level": 3, "condition": "급성 말초성 중증 통증 (8-10)" },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 4, "condition": "급성 말초성 중등도 통증 (4-7)" },
+            { "ktas_level": 5, "condition": "석고붕대 단순 체크 또는 교환" }
+          ]
+        },
+        "859": {
+          "name": "영상 검사 / 검사실 검사",
+          "nacrs_code": "859",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 5,
+              "condition": "단순 영상 검사 / 검사실 검사 의뢰"
+            }
+          ]
+        },
+        "860": {
+          "name": "의료 장비 문제",
+          "nacrs_code": "860",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성/말초성 통증 2단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성/말초성 통증 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "의료 장비 문제, 증상이나 불편함이 없음"
+            }
+          ]
+        },
+        "861": {
+          "name": "처방전 / 투약 문의",
+          "nacrs_code": "861",
+          "second_order_modifiers": [
+            { "ktas_level": 5, "condition": "처방전 발급 / 단순 투약 문의" }
+          ]
+        },
+        "862": {
+          "name": "반지 제거",
+          "nacrs_code": "862",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "신경혈관 장애 동반 (말단 청색증, 무맥, 감각마비)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "단순 반지 제거" }
+          ]
+        },
+        "863": {
+          "name": "비정상 검사 결과",
+          "nacrs_code": "863",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "바로 치료가 시작되어야 할 위험수치나 이상소견 (Panic value)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "위험수치나 이상소견에 해당되나 정상 활력징후"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계 만족" },
+            {
+              "ktas_level": 5,
+              "condition": "위험수치/이상소견에 해당되지 않으며 정상 활력징후"
+            }
+          ]
+        },
+        "864": {
+          "name": "창백함 / 빈혈",
+          "nacrs_code": "864",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            { "ktas_level": 4, "condition": "창백함 / 빈혈 (활력징후 안정)" }
+          ]
+        },
+        "865": {
+          "name": "수술 후 합병증",
+          "nacrs_code": "865",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성 중증 통증, 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성/말초성 통증 3단계, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성/말초성 통증 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "정상 활력징후, 통증 없음, 일상적인 체크"
+            }
+          ]
+        },
+        "866": {
+          "name": "경증 및 비특이적 증상 호소",
+          "nacrs_code": "866",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성/말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성/말초성 통증 3단계, 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성/말초성 통증 4단계, 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "경증 및 비특이적 증상 호소 (정상 활력징후, 경증 <4)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

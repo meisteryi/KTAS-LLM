@@ -1,0 +1,743 @@
+{
+  "module": "KTAS_Part2_Adult_Core_Systems",
+  "target_population": "Adult (>= 15 years)",
+  "categories": {
+    "cardiovascular": {
+      "category_name": "심혈관계",
+      "complaints": {
+        "001": {
+          "name": "심정지 (비외상성)",
+          "nacrs_code": "001",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "심정지 (비외상성)" },
+            {
+              "ktas_level": 5,
+              "condition": "심폐소생술의 대상이 아닌 경우 (DNR 등)"
+            }
+          ]
+        },
+        "002": {
+          "name": "심정지 (외상성)",
+          "nacrs_code": "002",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "심정지 (외상성)" },
+            {
+              "ktas_level": 5,
+              "condition": "심폐소생술의 대상이 아닌 경우 (DNR 등)"
+            }
+          ]
+        },
+        "003": {
+          "name": "흉통 (심장성)",
+          "nacrs_code": "003",
+          "first_order_modifiers_applicable": [
+            "중증 호흡곤란 (1)",
+            "쇼크 (1)",
+            "무의식 (1)",
+            "중등도 호흡곤란 (2)",
+            "혈역학적 장애 (2)",
+            "의식변화 (2)",
+            "열/면역저하 (2)",
+            "패혈증 의증 (2)",
+            "급성 중심성 중증 통증 (2)"
+          ],
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 조건 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "심장성 흉통 (전형적인 쥐어짜는 양상, 방사통 등)"
+            }
+          ]
+        },
+        "004": {
+          "name": "흉통 (비심장성)",
+          "nacrs_code": "004",
+          "notes": "흉벽의 통증은 말초성 통증임을 유의할 것.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 조건 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 중심성 통증 2단계 만족"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "기타 심각한 가슴 통증 (잡아 째는, 찢어지는 통증 - 대동맥박리 의심 등)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성/말초성 통증 3단계, 만성 3단계 만족"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 중심성/말초성 통증 4단계, 만성 4단계 만족"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "가슴 통증, 비심장성 (경증 또는 만성)"
+            }
+          ]
+        },
+        "005": {
+          "name": "심계항진 / 불규칙한 심장박동",
+          "nacrs_code": "005",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 조건 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 조건 만족" },
+            { "ktas_level": 2, "condition": "심장성 가슴 통증 동반" },
+            {
+              "ktas_level": 2,
+              "condition": "치명적일 수 있는 부정맥의 병력이나 기록"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 조건 만족" },
+            { "ktas_level": 3, "condition": "급성 발병, 지속되는 증상" },
+            {
+              "ktas_level": 4,
+              "condition": "심계항진 병력, 현재는 회복된 상태"
+            }
+          ]
+        },
+        "006": {
+          "name": "고혈압",
+          "nacrs_code": "006",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 조건 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 조건 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "고혈압(SBP >= 220 또는 DBP >= 130) + 관련 증상 1가지 이상 동반 (숨참, 가슴 통증, 혼미, 급성 두통, 구역/구토)"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 조건 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "고혈압(SBP >= 220 또는 DBP >= 130), 동반된 다른 증상 없음"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "고혈압(SBP 200-220 그리고 DBP 110-130), 고혈압 증상 동반"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "고혈압(SBP 200-220 그리고 DBP 110-130), 무증상"
+            }
+          ]
+        },
+        "007": {
+          "name": "전신 쇠약",
+          "nacrs_code": "007",
+          "notes": "만약 뇌졸중을 의심해야 하면 '신경계 - 뇌졸중 증상'으로 이동",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "1차 활력징후 1단계 또는 중증 탈수"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 중등도 탈수"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 갑자기 보행이 어려움"
+            },
+            { "ktas_level": 3, "condition": "경증 탈수" },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 탈수의 가능성 있음"
+            },
+            { "ktas_level": 4, "condition": "만성 쇠약" }
+          ]
+        },
+        "008": {
+          "name": "실신 / 전실신",
+          "nacrs_code": "008",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 조건 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 조건 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "새로 발병한 부정맥, 불규칙 맥박/맥박수의 변화"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "전구증상 없음 (Sudden onset without prodrome)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "운동 중 발생함 (Exertional syncope)"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 조건 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "전구증상 동반 또는 급격한 자세 변화시 발병 (미주신경성/기립성)"
+            },
+            { "ktas_level": 3, "condition": "의식소실의 병력" },
+            { "ktas_level": 4, "condition": "정상 활력징후, 증상 회복" }
+          ]
+        },
+        "009": {
+          "name": "전신 부종",
+          "nacrs_code": "009",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "전신 부종, 정상 활력징후" }
+          ]
+        },
+        "010": {
+          "name": "다리 부기 / 부종",
+          "nacrs_code": "010",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "일측성 다리 부기 / 부종 (DVT 의심)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계 또는 말초성 통증 4단계 또는 만성 4단계 만족"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "양측성 다리 부기 / 부종 (정상 활력징후)"
+            },
+            { "ktas_level": 5, "condition": "만성 다리 부종" }
+          ]
+        },
+        "011": {
+          "name": "맥박이 없거나 차가운 사지",
+          "nacrs_code": "011",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "사지 말단에 맥박이 없음 (급성 동맥폐색 의심)"
+            },
+            { "ktas_level": 2, "condition": "사지가 차가움" }
+          ]
+        },
+        "012": {
+          "name": "일측성의 홍조 띤 뜨거운 사지",
+          "nacrs_code": "012",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 급성 말초성 중증 통증 (8-10)"
+            },
+            { "ktas_level": 3, "condition": "광범위한 염증" },
+            { "ktas_level": 4, "condition": "국소성 염증" }
+          ]
+        }
+      }
+    },
+    "respiratory": {
+      "category_name": "호흡기계",
+      "complaints": {
+        "651": {
+          "name": "숨참",
+          "nacrs_code": "651",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "1차 활력징후 1단계 (SpO2 < 90% 등)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 (SpO2 < 92% 등)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "FEV1 혹은 PEFR이 40% 미만으로 예상되는 천식 환자 (중증)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 (SpO2 92-94% 등)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "FEV1 혹은 PEFR이 40-60%로 예상되는 천식 환자 (중등도)"
+            },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계" },
+            {
+              "ktas_level": 4,
+              "condition": "FEV1 혹은 PEFR이 60% 이상으로 예상되는 천식 환자 (경증)"
+            }
+          ]
+        },
+        "652": {
+          "name": "호흡 정지",
+          "nacrs_code": "652",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "호흡 정지 (즉각적 소생술 필요)" }
+          ]
+        },
+        "653": {
+          "name": "기침 / 코막힘",
+          "nacrs_code": "653",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계 만족" },
+            {
+              "ktas_level": 5,
+              "condition": "만성 기침 / 코막힘, 정상 활력징후"
+            }
+          ]
+        },
+        "654": {
+          "name": "과다호흡증후군",
+          "nacrs_code": "654",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            {
+              "ktas_level": 4,
+              "condition": "회복된 과다호흡증후군, 건강해 보임"
+            }
+          ]
+        },
+        "655": {
+          "name": "객혈",
+          "nacrs_code": "655",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 출혈성 질환(위급한 출혈)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "객혈, 건강해 보임 (소량의 단순 객혈)"
+            }
+          ]
+        },
+        "656": {
+          "name": "호흡기 이물질",
+          "nacrs_code": "656",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 급성 중심성 중증 통증 (8-10)"
+            },
+            { "ktas_level": 2, "condition": "침흘림 또는 협착음" },
+            { "ktas_level": 2, "condition": "목쉰소리와 언어장애" },
+            {
+              "ktas_level": 2,
+              "condition": "단추형 건전지, 뾰족한 물건 등 치료적 내시경을 고려해야 하는 경우"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 중심성 통증 3단계"
+            },
+            { "ktas_level": 3, "condition": "호흡곤란 없는 연하장애" },
+            {
+              "ktas_level": 4,
+              "condition": "호흡기 이물질, 경증 통증, 호흡곤란은 없음"
+            }
+          ]
+        },
+        "657": {
+          "name": "알레르기 반응",
+          "nacrs_code": "657",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "이전 중증 알레르기 반응의 기왕력"
+            },
+            { "ktas_level": 2, "condition": "아나필락시스 (Anaphylaxis)" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 말초성 통증 3단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "혈관부종 (Angioedema - 기도 폐쇄 위협 없음)"
+            },
+            { "ktas_level": 4, "condition": "두드러기 (Urticaria)" },
+            { "ktas_level": 5, "condition": "코막힘을 동반한 알레르기 비염" }
+          ]
+        }
+      }
+    },
+    "neurological": {
+      "category_name": "신경계",
+      "complaints": {
+        "401": {
+          "name": "의식수준의 변화",
+          "nacrs_code": "401",
+          "notes": "단순 주취에 의한 의식변화는 신체적 원인에 의한 의식변화의 가능성을 배제한 후에 선택해야 한다.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 고위험 사고기전"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "혈당 < 54 mg/dL 이고 관련증상을 동반"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "단순 주취에 의한 의식변화" }
+          ]
+        },
+        "402": {
+          "name": "착란",
+          "nacrs_code": "402",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "혈당 < 54 mg/dL 이고 관련증상을 동반"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "두통 또는 의식 상태의 변화를 동반한 급성 착란"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "두통 또는 의식 상태의 변화를 동반하지 않는 급성 착란"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "만성 착란, 평상시에 비해 변화 없음"
+            }
+          ]
+        },
+        "403": {
+          "name": "현훈",
+          "nacrs_code": "403",
+          "notes": "만약 뇌졸중을 의심해야 하면 '신경계 - 뇌졸중 증상'으로 이동",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "자세변화에 의해 유발되지 않음 (지속성 어지러움)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "신경학적 증상 동반 (복시, 구음장애 등)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "자세변화에 의해 발생, 다른 신경학적 증상 없음 (BPPV 의심 등)"
+            },
+            { "ktas_level": 4, "condition": "만성, 기타 어지러움" }
+          ]
+        },
+        "404": {
+          "name": "두통",
+          "nacrs_code": "404",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "급성, 중증, 지금까지 경험했던 두통 중 가장 심함 (벼락두통, SAH 의심)"
+            },
+            { "ktas_level": 2, "condition": "시력장애 동반 +/- 안구 통증" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 급성 중심성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "중심성 통증 3단계 또는 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "중심성 통증 4단계 또는 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "만성 또는 반복적인 두통 (신경학적 이상 없음)"
+            }
+          ]
+        },
+        "405": {
+          "name": "발작",
+          "nacrs_code": "405",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "지금 발작 중 (Active Seizure)" },
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "발작 후 상태 (Post-ictal state)" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계 또는 중심성 통증 2단계"
+            },
+            { "ktas_level": 3, "condition": "회복된 상태, 명료한 의식" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계 또는 만성 3단계"
+            }
+          ]
+        },
+        "406": {
+          "name": "보행 장애 / 운동 실조 / 강직",
+          "nacrs_code": "406",
+          "notes": "발병시간은 병원별 초급성 뇌경색 판단 기준에 따름. 뇌졸중 의심 시 '뇌졸중 증상'으로 이동.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "발병시간 < 24시간" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계 만족" }
+          ]
+        },
+        "407": {
+          "name": "두부 손상",
+          "nacrs_code": "407",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성 통증 2단계, 사고기전 2단계"
+            },
+            { "ktas_level": 2, "condition": "새로운 국소적 신경학적 증상" },
+            { "ktas_level": 3, "condition": "의식소실의 병력" },
+            { "ktas_level": 3, "condition": "장기간의 척추고정" },
+            { "ktas_level": 4, "condition": "의식소실의 병력이 없음" }
+          ]
+        },
+        "408": {
+          "name": "떨림 (Tremor)",
+          "nacrs_code": "408",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "만성 떨림" }
+          ]
+        },
+        "409": {
+          "name": "사지 약화 / 뇌졸중 증상",
+          "nacrs_code": "409",
+          "notes": "발병시간은 병원별 초급성 뇌경색 판단 기준에 따른다. 두통이 동반되어 있을 때 통증 점수를 사용할 수 있다.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "발병시간 24시간 이내" },
+            {
+              "ktas_level": 2,
+              "condition": "1차 활력징후 2단계, 중심성 통증 2단계, 출혈성 질환 2단계"
+            },
+            { "ktas_level": 3, "condition": "발병시간 24시간 초과" },
+            { "ktas_level": 3, "condition": "회복된 상태 (TIA 등)" },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중심성 통증 3단계, 출혈성 질환 3단계"
+            }
+          ]
+        },
+        "410": {
+          "name": "감각상실 / 이상감각",
+          "nacrs_code": "410",
+          "notes": "만약 뇌졸중을 의심해야 하면 '신경계 - 뇌졸중 증상'으로 이동",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "새로 발병한 감각소실 / 이상감각" },
+            { "ktas_level": 4, "condition": "만성 감각소실 / 이상감각" }
+          ]
+        },
+        "411": {
+          "name": "기억상실",
+          "nacrs_code": "411",
+          "notes": "만약 뇌졸중을 의심해야 하면 '신경계 - 뇌졸중 증상'으로 이동",
+          "second_order_modifiers": [
+            { "ktas_level": 4, "condition": "새로 발병한 기억상실" }
+          ]
+        }
+      }
+    },
+    "mental_health": {
+      "category_name": "정신건강",
+      "complaints": {
+        "351": {
+          "name": "우울증 / 자살 / 자해",
+          "nacrs_code": "351",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "계획적인 자살시도" },
+            { "ktas_level": 2, "condition": "뚜렷한 자살의도" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 3, "condition": "구체적인 계획이 없는 자살관념" },
+            { "ktas_level": 4, "condition": "우울함, 자살생각은 없음" }
+          ]
+        },
+        "352": {
+          "name": "불안 / 위기 상황",
+          "nacrs_code": "352",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "중증 불안 / 초조" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 3, "condition": "중등도 불안 / 초조" },
+            { "ktas_level": 4, "condition": "경증 불안 / 초조" }
+          ]
+        },
+        "353": {
+          "name": "환각 / 망상",
+          "nacrs_code": "353",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "급성 정신병, 중증 불안 / 초조, 도주의 가능성이나 안전에 대한 위험"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "1차 활력징후 3단계, 중등도 불안 / 초조 또는 편집증(Paranoia) 동반"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "1차 활력징후 4단계, 경증의 불안 / 초조, 안정되어 있음"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "만성적인 환각으로 인한 경증의 불안 / 초조"
+            }
+          ]
+        },
+        "354": {
+          "name": "불면증",
+          "nacrs_code": "354",
+          "second_order_modifiers": [
+            { "ktas_level": 4, "condition": "급성 불면증" },
+            { "ktas_level": 5, "condition": "만성 불면증" }
+          ]
+        },
+        "355": {
+          "name": "폭력 / 살인 행위",
+          "nacrs_code": "355",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "자신 혹은 타인을 해치려는 구체적인 계획이 있거나 충동을 억제할 수 없는 상태"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "구체적 계획이 없는 폭력적인 생각 (Ideation)"
+            }
+          ]
+        },
+        "356": {
+          "name": "사회문제",
+          "nacrs_code": "356",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "육체적 학대, 정신적 학대, 심각한 감정적 스트레스"
+            },
+            { "ktas_level": 4, "condition": "대처하기 어려운 상태" },
+            { "ktas_level": 5, "condition": "만성, 비급성 상태" }
+          ]
+        },
+        "357": {
+          "name": "기괴한 행동",
+          "nacrs_code": "357",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "조절되지 않는 행동" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "조절되는 행동" },
+            { "ktas_level": 4, "condition": "1차 활력징후 4단계 만족" },
+            { "ktas_level": 4, "condition": "해를 끼치지 않은 행동" },
+            { "ktas_level": 5, "condition": "만성, 비급성 상태" }
+          ]
+        },
+        "608": {
+          "name": "환자의 안녕에 대한 고려 (학대, 방임)",
+          "nacrs_code": "608",
+          "notes": "급성 의학적 문제는 없지만 학대나 방임이 의심되는 환자에게 사용하는 증상 분류.",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "폭력 또는 안전하지 않은 상황" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 학대가 반복될 위험"
+            },
+            { "ktas_level": 3, "condition": "육체적 폭행 또는 성폭행" },
+            { "ktas_level": 4, "condition": "학대의 병력 / 징후" }
+          ]
+        }
+      }
+    },
+    "substance_misuse": {
+      "category_name": "물질오용",
+      "complaints": {
+        "751": {
+          "name": "물질 오용 / 중독",
+          "nacrs_code": "751",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "고위험 물질 / 알 수 없는 물질" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 4, "condition": "알려진 저독성 물질" }
+          ]
+        },
+        "752": {
+          "name": "과다 복용",
+          "nacrs_code": "752",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            { "ktas_level": 2, "condition": "고위험 물질 / 알 수 없는 물질" },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 2, "condition": "계획적인 자살시도" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "구체적인 계획이 없는 자살관념" },
+            { "ktas_level": 4, "condition": "과다 복용 (저위험, 의도성 없음)" }
+          ]
+        },
+        "753": {
+          "name": "물질 금단",
+          "nacrs_code": "753",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "1차 활력징후 1단계 만족" },
+            { "ktas_level": 1, "condition": "경련 중" },
+            { "ktas_level": 2, "condition": "1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "최근 발작, 발작 후 상태, 초조 (진전섬망 등)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "도주의 가능성이나 안전에 대한 위험"
+            },
+            { "ktas_level": 2, "condition": "중증 불안 / 초조" },
+            { "ktas_level": 3, "condition": "1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "중등도 불안 / 초조" },
+            { "ktas_level": 4, "condition": "경증 불안 / 초조" }
+          ]
+        }
+      }
+    }
+  }
+}
