@@ -208,6 +208,22 @@ class ScenarioSampler:
             candidate_pool = self.db.all_pools[target_level]
 
         selected_item = random.choice(candidate_pool)
+
+        # 임상 현실성 보정을 위한 성별 및 연령 적합성 검사
+        comp_name = selected_item["complaint_name"]
+        cat_name = selected_item["category_name"]
+        full_desc = comp_name + " " + cat_name
+
+        # 1. 여성 전용 (임신, 산과, 부인과)
+        if any(kw in full_desc for kw in ["임신", "출산", "질 출혈", "질 분비물", "산후", "자궁"]):
+            gender = "여성"
+            if not is_adult:
+                age = random.randint(13, 14)  # 소아 청소년기 임신
+
+        # 2. 남성 전용 (고환, 음낭, 전립선)
+        elif any(kw in full_desc for kw in ["고환", "음낭", "전립선"]):
+            gender = "남성"
+
         first_order_hint = self.db.get_first_order_hints(group, target_level)
         is_emergency = target_level in [1, 2]
 
@@ -380,6 +396,38 @@ class DatasetGenerator:
 
                 if not turns or len(turns) < 2:
                     raise ValueError(f"유효하지 않은 대화 턴 수: {len(turns)}")
+
+                # 1. 역할 오표기 및 연속 assistant 턴 병합 보정
+                normalized_turns = []
+                for idx, t in enumerate(turns):
+                    role = t.get("role", "user" if idx % 2 == 0 else "assistant")
+                    content = t.get("content", "").strip()
+                    # 첫 턴이 아닌데 이전 턴이 assistant이고 현재도 assistant인 경우 병합
+                    if normalized_turns and normalized_turns[-1]["role"] == "assistant" and role == "assistant":
+                        normalized_turns[-1]["content"] += "\n\n" + content
+                    else:
+                        normalized_turns.append({"role": role, "content": content})
+                turns = normalized_turns
+
+                # 2. 마지막 턴이 assistant인지 및 정형 JSON 블록 포함 여부 검증
+                if turns[-1]["role"] != "assistant":
+                    raise ValueError("마지막 턴의 역할이 assistant가 아닙니다.")
+
+                last_content = turns[-1]["content"]
+                has_json_block = "```json" in last_content and "triage_result" in last_content
+                if not has_json_block:
+                    # raw json 형태가 있다면 ```json 으로 감싸기
+                    raw_match = re.search(r"(\{\s*\"thought_process\"[\s\S]*\})", last_content)
+                    if raw_match:
+                        try:
+                            parsed_raw = json.loads(raw_match.group(1).strip())
+                            prefix = last_content[:raw_match.start()].rstrip()
+                            formatted = json.dumps(parsed_raw, ensure_ascii=False, indent=2)
+                            turns[-1]["content"] = f"{prefix}\n\n```json\n{formatted}\n```"
+                        except Exception:
+                            raise ValueError("간호사 발화 후미의 triage JSON 파싱 실패")
+                    else:
+                        raise ValueError("간호사의 최종 발화에 triage_result JSON 블록이 누락되었습니다.")
 
                 return turns
 
