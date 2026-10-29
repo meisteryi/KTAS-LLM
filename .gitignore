@@ -1,1 +1,7 @@
 .env
+.venv/
+models/
+downloads/
+*.safetensors
+*.bin
+__pycache__/
