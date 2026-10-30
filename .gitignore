@@ -2,6 +2,10 @@
 .venv/
 models/
 downloads/
+outputs/
+test_out*/
 *.safetensors
 *.bin
+*.pt
+*.pth
 __pycache__/
