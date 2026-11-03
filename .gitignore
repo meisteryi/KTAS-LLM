@@ -3,6 +3,7 @@
 models/
 downloads/
 outputs/
+experiments/**/outputs/
 test_out*/
 *.safetensors
 *.bin
