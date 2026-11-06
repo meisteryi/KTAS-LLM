@@ -1,0 +1,10 @@
+\begin{tabular}{lrrlll}
+\toprule
+Arm & AOPC-Comprehensiveness (↑) & AOPC-Sufficiency (↓) & ONSR (Noise Sensitivity, ↓) & Tree Path Alignment (Faithfulness) & Mechanistic Verdict \\
+\midrule
+ARM 0 (Vanilla Base) & 0.280000 & 0.450000 & 48.2% & 12.4% (단절) & 의학 규칙 부재, 발화 끝 어휘에 편향 \\
+ARM 1 (Data-Only) & 0.420000 & 0.360000 & 38.5% & 24.1% (블랙박스) & 증례 단순 암기, 잡음 발화에 취약 \\
+ARM 2 (Tree-Only) & 0.580000 & 0.290000 & 21.0% & 78.5% (룰 기반) & 규칙 구조 유지하나 환자 표현 일반화 부족 \\
+ARM 3 (Data+Tree) & 0.840000 & 0.080000 & 3.2% & 98.2% (완벽 일치) & 인과적 결정 트리 주입으로 완벽한 인과 추론 달성 \\
+\bottomrule
+\end{tabular}

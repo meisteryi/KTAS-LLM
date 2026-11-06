@@ -1,0 +1,8 @@
+{
+  "arm": "Arm 3 (Data + Tree)",
+  "overall_dra": 94.0,
+  "overall_oir": 98.67,
+  "overall_csr_down": 94.67,
+  "overall_csr_maintain": 97.33,
+  "evaluated_cases": 150
+}

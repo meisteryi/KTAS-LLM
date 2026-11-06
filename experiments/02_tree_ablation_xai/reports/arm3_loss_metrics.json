@@ -1,0 +1,6 @@
+{
+  "arm": "Arm 3 (Data + Tree)",
+  "val_loss": 0.028,
+  "val_ppl": 1.0284,
+  "sample_count": 360
+}
