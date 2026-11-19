@@ -1,0 +1,1117 @@
+{
+  "module": "KTAS_Part5B_Pediatric_Somatic_Systems",
+  "target_population": "Pediatric (< 15 years)",
+  "categories": {
+    "gastrointestinal": {
+      "category_name": "소화기계",
+      "complaints": {
+        "251": {
+          "name": "복통",
+          "nacrs_code": "251",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 급성 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 급성 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "만성 경증 복부 통증" }
+          ]
+        },
+        "252": {
+          "name": "식욕부진",
+          "nacrs_code": "252",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            { "ktas_level": 3, "condition": "소아 1차 활력징후 3단계 만족" },
+            { "ktas_level": 3, "condition": "심각한 체중 감소" },
+            { "ktas_level": 4, "condition": "식욕부진, 건강해 보임" }
+          ]
+        },
+        "253": {
+          "name": "변비",
+          "nacrs_code": "253",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 급성 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 급성 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "단순변비" }
+          ]
+        },
+        "254": {
+          "name": "설사",
+          "nacrs_code": "254",
+          "notes": "출혈성 질환이 있으면서 혈성 설사가 동반되면 '소화기계 - 혈변/흑색변' 항목으로 이동. 탈수 평가 필수.",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "소아 1차 활력징후 1단계 또는 중증 탈수"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 중등도 탈수"
+            },
+            { "ktas_level": 3, "condition": "멈추지 않는 혈성 설사" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 경증 탈수"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 탈수의 가능성 있음"
+            },
+            { "ktas_level": 5, "condition": "만성 설사, 정상 활력징후" }
+          ]
+        },
+        "255": {
+          "name": "직장내 이물질",
+          "nacrs_code": "255",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "직장내 이물질, 경증 통증 (<4)" }
+          ]
+        },
+        "256": {
+          "name": "샅고랑 부위 통증 / 종괴",
+          "nacrs_code": "256",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10, 감돈탈장 의심)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "샅고랑 부위 통증 / 종괴 (만성 경증)"
+            }
+          ]
+        },
+        "257": {
+          "name": "구토 / 구역",
+          "nacrs_code": "257",
+          "notes": "출혈성 질환에 커피 찌꺼기 모양 구토/흑색변 동반 시 '토혈'로 이동. 탈수 정의 참조.",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "소아 1차 활력징후 1단계 또는 중증 탈수"
+            },
+            { "ktas_level": 2, "condition": "지속되는 상당량의 토혈" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 중등도 탈수"
+            },
+            { "ktas_level": 3, "condition": "커피 찌꺼기 모양 구토 / 흑색변" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 경증 탈수"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 탈수 가능성 있음"
+            },
+            { "ktas_level": 5, "condition": "만성 구토 / 구역, 정상 활력징후" }
+          ]
+        },
+        "258": {
+          "name": "항문 / 직장 / 회음부 통증",
+          "nacrs_code": "258",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "만성 경증 통증 (<4)" }
+          ]
+        },
+        "259": {
+          "name": "토혈",
+          "nacrs_code": "259",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "활동성 또는 증상을 동반한 토혈" },
+            { "ktas_level": 3, "condition": "커피 찌꺼기 모양 구토 / 흑색변" },
+            {
+              "ktas_level": 3,
+              "condition": "구토에 극소량이 섞인 경우, 정상 활력징후"
+            }
+          ]
+        },
+        "260": {
+          "name": "혈변 / 흑색변",
+          "nacrs_code": "260",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "많은 양의 흑색변 또는 직장 출혈" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "중등도 양의 흑색변 또는 직장 출혈"
+            },
+            { "ktas_level": 4, "condition": "적은 양의 직장 출혈" }
+          ]
+        },
+        "261": {
+          "name": "황달",
+          "nacrs_code": "261",
+          "notes": "신생아 황달은 '신생아 황달' 주호소로 이동하여 분류",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "황달, 건강해 보임" }
+          ]
+        },
+        "262": {
+          "name": "딸꾹질",
+          "nacrs_code": "262",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "열(아파 보임) 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "열(건강해 보임) 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "딸꾹질, 만성, 힘들어 보이지 않음" }
+          ]
+        },
+        "263": {
+          "name": "복부 종괴 / 팽만",
+          "nacrs_code": "263",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            { "ktas_level": 3, "condition": "지속적인 구토" },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "만성 복부 종괴 / 팽만, 건강해 보임"
+            }
+          ]
+        },
+        "264": {
+          "name": "항문 / 직장 / 회음부 외상",
+          "nacrs_code": "264",
+          "notes": "직장 외상으로 인한 쇼크인 경우는 '몸통외상 - 관통상'으로 분류한다.",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증 2단계, 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 3단계, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4)"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "항문 / 직장 / 회음부 외상 (통증 경미)"
+            }
+          ]
+        },
+        "265": {
+          "name": "이물질 삼킴 (FB swallowing)",
+          "nacrs_code": "265",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            { "ktas_level": 2, "condition": "침흘림 또는 협착음" },
+            { "ktas_level": 2, "condition": "목쉰소리와 언어장애" },
+            {
+              "ktas_level": 2,
+              "condition": "단추형 건전지, 뾰족한 물건 등 치료적 내시경을 고려해야 하는 경우"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 통증 3단계"
+            },
+            { "ktas_level": 3, "condition": "지속적인 구토" },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 통증 4단계"
+            },
+            { "ktas_level": 4, "condition": "연하곤란이나 호흡 곤란 없음" }
+          ]
+        },
+        "266": {
+          "name": "신생아 수유곤란",
+          "nacrs_code": "266",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "수유 불가 + 기면, 의식 저하, 또는 무호흡 동반 (패혈증 의심)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 (체온 이상, 탈수, 혈역학적 장애)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "수유량이 평소의 50% 미만으로 급감하며 탈수 징후 동반"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 (미열, 경증 탈수)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "수유량 감소 있으나 탈수 징후 없음, 활력징후 안정"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "단순 수유 습관 및 역류 문의, 건강해 보임"
+            }
+          ]
+        },
+        "267": {
+          "name": "신생아 황달",
+          "nacrs_code": "267",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "생후 24시간 이내 발병한 급성 황달"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "손바닥과 발바닥까지 침범한 심한 황달 + 기면 또는 수유 거부"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "생후 24시간 이후 발병, 몸통 중심의 황달이나 수유 상태 양호"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "경미한 얼굴 국소 황달, 활력징후 안정"
+            }
+          ]
+        }
+      }
+    },
+    "urology_male_genital": {
+      "category_name": "비뇨기계 / 남성생식계",
+      "complaints": {
+        "301": {
+          "name": "옆구리 통증",
+          "nacrs_code": "301",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "만성 경증 옆구리 통증" }
+          ]
+        },
+        "302": {
+          "name": "혈뇨",
+          "nacrs_code": "302",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증 (8-10), 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 통증 3단계, 출혈성 질환, 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 통증 4단계, 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "만성 경증 통증 또는 단순 혈뇨" }
+          ]
+        },
+        "303": {
+          "name": "생식기의 분비물 / 피부병변",
+          "nacrs_code": "303",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 급성 중증 통증 (8-10), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 5,
+              "condition": "생식기의 분비물 / 피부병변 (경증 통증 <4)"
+            }
+          ]
+        },
+        "304": {
+          "name": "음경 부종",
+          "nacrs_code": "304",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "지속발기증 (Priapism)" },
+            {
+              "ktas_level": 2,
+              "condition": "감돈포경 (안으로 말린 음경꺼풀, 정복되지 않음)"
+            },
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 통증 4단계, 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "음경 부종, 경증 또는 만성 통증" }
+          ]
+        },
+        "305": {
+          "name": "고환 통증 / 부종",
+          "nacrs_code": "305",
+          "notes": "소아 고환 통증은 고환염전의 위험성이 높아 신속한 평가 필요",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "고환 통증 / 부종 (만성 경증)" }
+          ]
+        },
+        "306": {
+          "name": "소변배출장애",
+          "nacrs_code": "306",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            { "ktas_level": 4, "condition": "소변배출장애 (경증 통증 <4)" }
+          ]
+        },
+        "307": {
+          "name": "요로감염 증상",
+          "nacrs_code": "307",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "만성, 경증 요로감염 증상호소" }
+          ]
+        },
+        "308": {
+          "name": "핍뇨증",
+          "nacrs_code": "308",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 4, "condition": "핍뇨증 (활력징후 안정)" }
+          ]
+        },
+        "309": {
+          "name": "다뇨증",
+          "nacrs_code": "309",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 4, "condition": "다뇨증 (활력징후 안정)" }
+          ]
+        },
+        "310": {
+          "name": "생식기의 외상",
+          "nacrs_code": "310",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증 2단계, 출혈성 질환(위급)"
+            },
+            { "ktas_level": 3, "condition": "성폭행, 안정되어 있음" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 통증 3단계, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 통증 4단계"
+            },
+            { "ktas_level": 5, "condition": "생식기의 외상, 통증 없음" }
+          ]
+        },
+        "311": {
+          "name": "성폭행 (남성)",
+          "nacrs_code": "311",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 중증 통증 (8-10)"
+            },
+            { "ktas_level": 2, "condition": "사건 발생 2시간 미만 (<2시간)" },
+            {
+              "ktas_level": 3,
+              "condition": "사건 발생 2시간 이상 12시간 미만 (>=2시간부터 <12시간)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "사건 발생 12시간 이상 경과; 손상 없음"
+            }
+          ]
+        }
+      }
+    },
+    "obstetrics_gynecology": {
+      "category_name": "임신 / 여성생식계",
+      "complaints": {
+        "451": {
+          "name": "월경 문제",
+          "nacrs_code": "451",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 4, "condition": "월경 문제 (경증 통증 <4)" }
+          ]
+        },
+        "452": {
+          "name": "질내 이물질",
+          "nacrs_code": "452",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 통증 2단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "질내 이물질 (경증 통증 <4)" }
+          ]
+        },
+        "453": {
+          "name": "질 분비물",
+          "nacrs_code": "453",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 통증 2단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "경증 질 분비물" }
+          ]
+        },
+        "454": {
+          "name": "성폭행",
+          "nacrs_code": "454",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "성폭행 발생 후 2시간 미만 (<2시간)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 중등도 통증 (4-7)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "성폭행 발생 후 2시간 이상 12시간 미만"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "성폭행 발생 후 12시간 이상 경과; 손상 없음"
+            }
+          ]
+        },
+        "455": {
+          "name": "질 출혈",
+          "nacrs_code": "455",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 1,
+              "condition": "소아 1차 활력징후 1단계 만족 또는 임신 관련 다량 질 출혈"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증 (8-10), 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "임신과 관련 없는 다량의 질 출혈" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 출혈성 질환(경도/중등도)"
+            },
+            { "ktas_level": 3, "condition": "질 출혈 - 정상 활력징후" },
+            { "ktas_level": 4, "condition": "질 출혈 - 경증 / 점상 출혈" }
+          ]
+        },
+        "456": {
+          "name": "음순 부종",
+          "nacrs_code": "456",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계 또는 급성 중등도 통증 (4-7)"
+            },
+            { "ktas_level": 5, "condition": "음순 부종 (경증 통증 <4)" }
+          ]
+        },
+        "457": {
+          "name": "20주 미만의 임신",
+          "nacrs_code": "457",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증 2단계, 출혈성 질환 2단계"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "주기적인 복부 뭉침 또는 허리 통증을 동반한 골반의 압박감"
+            },
+            { "ktas_level": 2, "condition": "다량의 질 출혈" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 통증 3단계, 출혈성 질환 3단계"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "경증 / 중등도의 질 출혈 또는 복부 뭉침"
+            },
+            { "ktas_level": 3, "condition": "양수누출의 가능성" },
+            { "ktas_level": 4, "condition": "질 출혈 (점상출혈)" },
+            {
+              "ktas_level": 5,
+              "condition": "핑크빛 점액성 분비물 또는 질 분비물"
+            }
+          ]
+        },
+        "458": {
+          "name": "20주 이상의 임신",
+          "nacrs_code": "458",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 1,
+              "condition": "태아의 일부분이 보이거나 탯줄 탈출"
+            },
+            { "ktas_level": 1, "condition": "지속되는 질 출혈 또는 태동 없음" },
+            {
+              "ktas_level": 1,
+              "condition": "발작 중 또는 발작 후 상태 (자간증)"
+            },
+            { "ktas_level": 2, "condition": "진통 (자궁수축 <= 5분)" },
+            {
+              "ktas_level": 2,
+              "condition": "SBP > 160 mmHg 또는 DBP > 100 mmHg"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "두통 +/- 부종 +/- 상복부 통증 +/- 시각장애"
+            },
+            { "ktas_level": 3, "condition": "진통 (자궁수축 > 5분)" },
+            { "ktas_level": 3, "condition": "양수 누출 또는 SBP > 140 mmHg" },
+            { "ktas_level": 4, "condition": "임신주수 > 20주 (특이 소견 없음)" }
+          ]
+        },
+        "460": {
+          "name": "질 통증 / 가려움",
+          "nacrs_code": "460",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 중증 통증 (8-10)" },
+            { "ktas_level": 4, "condition": "급성 중등도 통증 (4-7)" },
+            {
+              "ktas_level": 5,
+              "condition": "질 통증, 가려움 동반 (경증 통증 <4)"
+            }
+          ]
+        }
+      }
+    },
+    "musculoskeletal": {
+      "category_name": "근골격계",
+      "complaints": {
+        "551": {
+          "name": "목, 등, 허리 통증",
+          "nacrs_code": "551",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "신경학적 손상 +/- 장과 방광의 기능장애"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증 (4-7), 만성 3단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 경증 통증 (<4), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "목, 등, 허리 통증 (만성 경증)" }
+          ]
+        },
+        "552": {
+          "name": "외상성 목, 등, 허리 손상",
+          "nacrs_code": "552",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "신경학적 손상 +/- 장과 방광의 기능장애"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증, 출혈성 질환(위급), 고위험 사고기전"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "외상성 목, 등, 허리 손상, 경증 통증 (<4)"
+            }
+          ]
+        },
+        "553": {
+          "name": "절단",
+          "nacrs_code": "553",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            { "ktas_level": 1, "condition": "사지의 외상성 절단" },
+            { "ktas_level": 2, "condition": "손가락의 외상성 절단" },
+            { "ktas_level": 2, "condition": "발가락의 외상성 절단" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 사고기전, 출혈성 질환"
+            },
+            { "ktas_level": 3, "condition": "부분 절단 또는 경미한 절단" }
+          ]
+        },
+        "554": {
+          "name": "상지 통증",
+          "nacrs_code": "554",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "신경혈관 장애 동반" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 아프고, 신경혈관 장애를 동반함"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만, 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 5, "condition": "상지의 만성 경증 통증 (<4)" }
+          ]
+        },
+        "555": {
+          "name": "하지 통증",
+          "nacrs_code": "555",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계 또는 급성 중증 통증 (8-10)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 아프고, 신경혈관 장애를 동반함"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만, 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 5, "condition": "하지의 만성 경증 통증 (<4)" }
+          ]
+        },
+        "556": {
+          "name": "상지 손상",
+          "nacrs_code": "556",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 사고기전, 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "개방성 골절 또는 신경혈관 장애" },
+            { "ktas_level": 3, "condition": "명백한 변형" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 아프고, 신경혈관 장애를 동반함"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만, 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 5, "condition": "상지의 외상, 만성 경증 통증 (<4)" }
+          ]
+        },
+        "557": {
+          "name": "하지 손상",
+          "nacrs_code": "557",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 출혈성 질환(위급), 사고기전"
+            },
+            { "ktas_level": 2, "condition": "개방성 골절 혹은 신경혈관 장애" },
+            { "ktas_level": 3, "condition": "명백한 변형" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 아프고, 신경혈관 장애를 동반함"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만, 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 5, "condition": "하지의 외상, 만성 경증 통증 (<4)" }
+          ]
+        },
+        "558": {
+          "name": "관절 부종",
+          "nacrs_code": "558",
+          "second_order_modifiers": [
+            { "ktas_level": 2, "condition": "소아 1차 활력징후 2단계 만족" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중증 통증 (8-10), 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "소아 1차 활력징후 4단계, 중등도 통증 (4-7), 만성 4단계"
+            },
+            { "ktas_level": 5, "condition": "관절 부종 (경증 통증 <4)" }
+          ]
+        },
+        "559_ped": {
+          "name": "소아 보행 장애 / 보행시 통증",
+          "nacrs_code": "559",
+          "second_order_modifiers": [
+            {
+              "ktas_level": 2,
+              "condition": "신경학적 결손 동반 또는 급성 체중 부하 불가 + 발열 (화농성 관절염 의심)"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "절뚝거림(Limping), 중등도 통증 (4-7), 활력징후 안정"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "경미한 보행 불편, 경증 통증 (<4), 신체 검진 정상"
+            }
+          ]
+        },
+        "858": {
+          "name": "석고붕대 확인",
+          "nacrs_code": "858",
+          "second_order_modifiers": [
+            { "ktas_level": 3, "condition": "급성 중증 통증 (8-10)" },
+            {
+              "ktas_level": 3,
+              "condition": "석고붕대가 꽉 끼어 신경혈관 장애를 동반함"
+            },
+            { "ktas_level": 4, "condition": "중등도 통증 (4-7)" },
+            {
+              "ktas_level": 4,
+              "condition": "석고붕대가 꽉 끼어 아프지만 신경혈관 장애는 없음"
+            },
+            { "ktas_level": 5, "condition": "석고붕대 체크 또는 석고붕대 교환" }
+          ]
+        }
+      }
+    },
+    "torso_trauma": {
+      "category_name": "몸통외상",
+      "complaints": {
+        "801": {
+          "name": "몸통을 포함한 다발성 외상 - 관통상",
+          "nacrs_code": "801",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 1,
+              "condition": "신경학적 손상과 동반된 척추 골절"
+            },
+            { "ktas_level": 1, "condition": "두부의 관통상" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 통증 2단계, 출혈성 질환, 사고기전"
+            },
+            { "ktas_level": 2, "condition": "사지의 신경혈관 장애" },
+            { "ktas_level": 2, "condition": "머리, 가슴, 복부의 관통상" },
+            {
+              "ktas_level": 3,
+              "condition": "몸통을 포함한 다발성 외상 - 관통상 (표재성/안정)"
+            }
+          ]
+        },
+        "802": {
+          "name": "몸통을 포함한 다발성 외상 - 둔상",
+          "nacrs_code": "802",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 1,
+              "condition": "신경학적 손상과 동반된 척추 골절"
+            },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 통증 2단계, 출혈성 질환, 사고기전"
+            },
+            { "ktas_level": 2, "condition": "사지의 신경혈관 장애" },
+            { "ktas_level": 3, "condition": "장기간의 척추고정" },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "몸통을 포함한 다발성 외상 - 둔상 (경증 통증 <4)"
+            }
+          ]
+        },
+        "803": {
+          "name": "단독 흉부 외상 - 관통상",
+          "nacrs_code": "803",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계 또는 출혈성 질환(위급)"
+            },
+            { "ktas_level": 2, "condition": "단독 흉부 외상 - 관통상" }
+          ]
+        },
+        "804": {
+          "name": "단독 흉부 외상 - 둔상",
+          "nacrs_code": "804",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증, 출혈성 질환(위급), 사고기전"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "단독 흉부 외상 - 둔상 (건강해 보임)"
+            }
+          ]
+        },
+        "805": {
+          "name": "단독 복부 외상 - 관통상",
+          "nacrs_code": "805",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "단독 복부 외상 - 관통상 (복벽 전층 관통)"
+            }
+          ]
+        },
+        "806": {
+          "name": "단독 복부 외상 - 둔상",
+          "nacrs_code": "806",
+          "second_order_modifiers": [
+            { "ktas_level": 1, "condition": "소아 1차 활력징후 1단계 만족" },
+            {
+              "ktas_level": 2,
+              "condition": "소아 1차 활력징후 2단계, 중증 통증, 출혈성 질환(위급), 사고기전"
+            },
+            {
+              "ktas_level": 3,
+              "condition": "소아 1차 활력징후 3단계, 중등도 통증, 출혈성 질환(경도/중등도)"
+            },
+            {
+              "ktas_level": 4,
+              "condition": "단독 복부 외상 - 둔상 (건강해 보임)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
