@@ -1,26 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""KTAS T_orig vs T_opt LLM A/B 추론 성능 및 경로 충실도 벤치마크 실행기.
+"""KTAS T_orig vs T_opt LLM A/B 추론 성능 및 경로 충실도 벤치마크 실행기 (공정성 보정 + 통계 검정).
 
 특징:
-1. 백엔드 자동 감지: 로컬 OpenAI 호환 API (--base_url) 또는 로컬 HuggingFace 모델(Qwen2.5-32B-Instruct) 지원
+1. 백엔드 자동 감지: 로컬 OpenAI 호환 API (--base_url) 또는 로컬 HuggingFace 모델(Qwen2.5-32B-Instruct)
 2. 중단 재개(Resume): data/benchmark/ab_raw_results.jsonl에 실시간 append 저장
-3. 엄격한 A/B 통제: temperature=0.0, 동일 시스템 프롬프트/출력 스키마 유지, 트리 컨텍스트만 교체
-4. 2대 핵심 지표 + 전제 조건 자동 채점 및 reports/ab_benchmark_results.md 생성
+3. 엄격한 A/B 통제:
+   - temperature=0.0, 동일 시스템 프롬프트(단락 규칙 및 표준 1차 축 명칭 안내 공통 적용)
+   - 트리 컨텍스트(T_orig vs T_opt)만 교체
+4. 임상 안전성(Critical Under-triage, Over-triage), 층화 분석(Hotspot vs General),
+   통계 검정(McNemar's test, Wilcoxon signed-rank test) 자동 산출
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import time
 import urllib.request
-from collections import Counter
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
 
+from scipy.stats import binomtest, chi2, wilcoxon
 from tqdm.auto import tqdm
 
 
@@ -30,22 +34,28 @@ REPO_ROOT = EXP_ROOT.parents[1]
 SYSTEM_PROMPT = (
     "당신은 한국형 응급환자 분류도구(KTAS) 전문 분류 의사입니다. "
     "주어진 주호소의 [결정 트리 규칙]만을 엄격히 따라 환자의 상태에 해당하는 최종 KTAS 등급(1~5)을 판단하십시오.\n"
-    "임의의 의학 지식으로 규칙을 건너뛰지 말고, 반드시 트리의 예외 게이트, 주호소에 명시된 모든 1차 공통 축(이상 유무 포함), 2차 세부 규칙을 순서대로 확인한 뒤 "
-    "아래 JSON 스키마로만 정확히 응답하십시오(마크다운 코드블록 외 다른 설명 금지):\n"
-    '{\n'
+    "[공통 결정 규칙]: 예외 게이트가 없으면 매칭되는 모든 조건 중 가장 위급한 등급(최소 KTAS 숫자, 1이 가장 위급)을 선택하십시오. "
+    "이미 더 위급한 등급이 확정되면 하위 등급 규칙은 건너뛰어도 되며, 확인한 1차 고려사항 축은 아래 표준 축 이름"
+    "(1차_활력징후, 통증_척도, 출혈_양상, 고위험_사고기전)으로 모두 기록하십시오.\n"
+    "임의의 의학 지식으로 규칙을 지어내지 말고 아래 JSON 스키마로만 정확히 응답하십시오(마크다운 코드블록 외 다른 설명 금지):\n"
+    "{\n"
     '  "reasoning_steps": ["확인한 단계별 사고 과정..."],\n'
     '  "checked_exception_gates": ["확인한 예외 게이트명 (없으면 빈 배열)"],\n'
-    '  "checked_first_order_axes": ["해당 주호소에서 확인한 모든 1차 축 이름 (예: 1차_활력징후, 통증_척도, 출혈_양상, 고위험_사고기전 등 누락 없이 기재)"],\n'
+    '  "checked_first_order_axes": ["확인한 1차 축 표준 이름 (예: 1차_활력징후, 통증_척도, 출혈_양상, 고위험_사고기전)"],\n'
     '  "matched_rule_text": "최종 등급 결정에 직접 매칭된 규칙 원문",\n'
     '  "final_ktas_level": 1\n'
-    '}'
+    "}"
 )
 
+# T_orig의 세부 항목 표현도 공정하게 표준 축으로 인식하도록 별칭 확장
 AXIS_ALIASES = {
-    "1차_활력징후": ("1차_활력징후", "1차 활력징후", "활력징후", "1차활력징후"),
-    "통증_척도": ("통증_척도", "통증 척도", "통증", "중심성", "말초성"),
-    "출혈_양상": ("출혈_양상", "출혈성 질환", "출혈"),
-    "고위험_사고기전": ("고위험_사고기전", "사고기전"),
+    "1차_활력징후": (
+        "1차_활력징후", "1차 활력징후", "활력징후", "1차활력징후",
+        "호흡곤란", "쇼크", "혈역학", "무의식", "의식변화", "의식수준", "체온", "패혈증", "sirs", "열 (", "열(",
+    ),
+    "통증_척도": ("통증_척도", "통증 척도", "통증", "중심성", "말초성", "8-10", "4-7"),
+    "출혈_양상": ("출혈_양상", "출혈성 질환", "출혈성질환", "출혈"),
+    "고위험_사고기전": ("고위험_사고기전", "고위험성 사고기전", "사고기전"),
 }
 
 
@@ -86,7 +96,7 @@ def serialize_t_opt_context(opt_comp: dict[str, Any]) -> str:
     """T_opt 단일 주호소의 계층·변수 그룹화 컨텍스트를 직렬화한다."""
     lines = [
         f"[주호소]: {opt_comp.get('name')} (NACRS {opt_comp.get('nacrs_code')})",
-        "[결정 규칙]: 예외 게이트가 없으면 1차 공통 축과 2차 변수 그룹에서 매칭되는 모든 조건 중 가장 위급한 등급(최소 KTAS 숫자, 1이 가장 위급)을 선택하고, 이미 더 위급한 등급이 확정되면 하위 등급 규칙은 건너뛰십시오.",
+        f"[평가 우선순위]: {opt_comp.get('evaluation_priority', 'standard')}",
     ]
     ex_gates = opt_comp.get("exception_gates", [])
     if ex_gates:
@@ -96,14 +106,14 @@ def serialize_t_opt_context(opt_comp: dict[str, Any]) -> str:
 
     first_pass = opt_comp.get("first_order_single_pass", {})
     if first_pass:
-        lines.append("[2. 1차 공통 축 Single-Pass (축별 1회 확인, 최고 중증도 우선)]:")
+        lines.append("[2. 1차 공통 축 Single-Pass]:")
         for axis, rules in first_pass.items():
             items = " / ".join(f"{r['ktas_level']}단계:{r['condition']}" for r in rules)
             lines.append(f"  - [{axis}] {items}")
 
     sec_groups = opt_comp.get("second_order_variable_groups", {})
     if sec_groups:
-        lines.append("[3. 2차 변수 그룹 (상위 등급 확보 시 하위 그룹 스킵 가능)]:")
+        lines.append("[3. 2차 변수 그룹]:")
         for axis, rules in sec_groups.items():
             items = " / ".join(f"{r['ktas_level']}단계:{r['condition']}" for r in rules)
             lines.append(f"  - [{axis}] {items}")
@@ -130,7 +140,6 @@ def parse_llm_json(raw_text: str) -> dict[str, Any]:
                 return obj
         except json.JSONDecodeError:
             pass
-    # 정규식 폴백
     lvl_m = re.search(r'"final_ktas_level"\s*:\s*([1-5])', cleaned)
     if not lvl_m:
         lvl_m = re.search(r"(?:KTAS|최종\s*등급)[^\d]{0,10}([1-5])", cleaned)
@@ -155,7 +164,6 @@ class InferenceBackend:
         self.tokenizer = None
         self.model = None
         self.model_label = model_arg
-
         self._init_backend()
 
     def _init_backend(self) -> None:
@@ -163,7 +171,6 @@ class InferenceBackend:
             if self.base_url:
                 self.backend = "openai"
             else:
-                # 로컬 OpenAI 호환 서버 자동 탐지
                 for url in ("http://localhost:8000/v1", "http://localhost:11434/v1"):
                     try:
                         with urllib.request.urlopen(f"{url}/models", timeout=1.5) as resp:
@@ -200,7 +207,6 @@ class InferenceBackend:
             self.model.eval()
             print("[+] HuggingFace 모델 준비 완료")
         else:
-            # OpenAI 호환 API 사용 시에도 정확한 토큰 측정을 위해 로컬 토크나이저(있으면) 로드
             local_tok_dir = REPO_ROOT / "models" / "Qwen2.5-32B-Instruct"
             if local_tok_dir.exists():
                 from transformers import AutoTokenizer
@@ -237,7 +243,6 @@ class InferenceBackend:
             gen_text = self.tokenizer.decode(gen_ids, skip_special_tokens=True)
             return gen_text, in_tokens, out_tokens
 
-        # OpenAI 호환 REST 호출 (외부 openai SDK 미설치 환경에서도 동작)
         payload = json.dumps(
             {
                 "model": self.model_arg,
@@ -278,8 +283,8 @@ def _macro_f1(y_true: list[int], y_pred: list[int]) -> float:
 
 def _axis_covered(req_axis: str, checked_axes: list[str], reasoning_steps: list[str]) -> bool:
     aliases = AXIS_ALIASES.get(req_axis, (req_axis,))
-    haystack = " ".join(str(x) for x in checked_axes) + " " + " ".join(str(x) for x in reasoning_steps)
-    return any(al in haystack for al in aliases)
+    haystack = (" ".join(str(x) for x in checked_axes) + " " + " ".join(str(x) for x in reasoning_steps)).lower()
+    return any(al.lower() in haystack for al in aliases)
 
 
 def _rule_cited_correctly(case: dict[str, Any], pred_rule: str, pred_steps: list[str]) -> bool:
@@ -289,7 +294,7 @@ def _rule_cited_correctly(case: dict[str, Any], pred_rule: str, pred_steps: list
     elif case.get("matched_second_order_rule"):
         target_rule = case["matched_second_order_rule"]["condition"]
     else:
-        return True  # 1차 축 결정 케이스는 1차 축 누락 여부로 판정
+        return True
 
     norm_t = re.sub(r"\s+", "", target_rule)
     norm_p = re.sub(r"\s+", "", pred_rule or "")
@@ -297,7 +302,6 @@ def _rule_cited_correctly(case: dict[str, Any], pred_rule: str, pred_steps: list
         norm_p = re.sub(r"\s+", "", " ".join(str(x) for x in pred_steps))
     if norm_t in norm_p or SequenceMatcher(None, norm_t, norm_p).ratio() >= 0.50:
         return True
-    # 핵심 토큰 교집합 확인
     t_tokens = [w for w in re.split(r"[\s,/()]+", target_rule) if len(w) >= 2]
     if t_tokens:
         hit = sum(1 for w in t_tokens if w in (pred_rule + " " + " ".join(str(x) for x in pred_steps)))
@@ -305,59 +309,136 @@ def _rule_cited_correctly(case: dict[str, Any], pred_rule: str, pred_steps: list
     return False
 
 
+def mcnemar_pvalue(b_vec: list[bool], c_vec: list[bool]) -> float | None:
+    """쌍체 이진 지표에 대한 McNemar 검정 p-value를 반환한다."""
+    b = sum(1 for x, y in zip(b_vec, c_vec) if x and not y)
+    c = sum(1 for x, y in zip(b_vec, c_vec) if not x and y)
+    n_disc = b + c
+    if n_disc == 0:
+        return 1.0
+    if n_disc < 25:
+        return float(binomtest(min(b, c), n_disc, 0.5).pvalue)
+    stat = (abs(b - c) - 1.0) ** 2 / n_disc
+    return float(chi2.sf(stat, df=1))
+
+
+def wilcoxon_pvalue(vals_a: list[float], vals_b: list[float]) -> float | None:
+    """쌍체 연속 지표에 대한 Wilcoxon signed-rank test p-value를 반환한다."""
+    diffs = [a - b for a, b in zip(vals_a, vals_b)]
+    if not any(abs(d) > 1e-12 for d in diffs):
+        return 1.0
+    try:
+        res = wilcoxon(vals_a, vals_b, zero_method="wilcox")
+        val = float(res.pvalue)
+        return None if math.isnan(val) else val
+    except Exception:
+        return None
+
+
 def compute_metrics(records: list[dict[str, Any]], cases_by_id: dict[str, dict[str, Any]]) -> dict[str, Any]:
-    """단일 변인(T_orig 또는 T_opt) 레코드 리스트에 대해 핵심 지표를 계산한다."""
+    """단일 변인(T_orig 또는 T_opt) 레코드 리스트에 대해 임상 안전성/충실도/토큰 지표를 계산한다."""
     n = len(records)
     if n == 0:
         return {}
-    y_true = [cases_by_id[r["case_id"]]["ground_truth_level"] for r in records]
-    y_pred = [int(r["parsed"].get("final_ktas_level", 0)) for r in records]
+    rec_by_id = {r["case_id"]: r for r in records}
+    ordered_ids = sorted(rec_by_id.keys())
 
-    acc = sum(1 for t, p in zip(y_true, y_pred) if t == p) / n * 100.0
+    y_true = [cases_by_id[cid]["ground_truth_level"] for cid in ordered_ids]
+    y_pred = [int(rec_by_id[cid]["parsed"].get("final_ktas_level", 0)) for cid in ordered_ids]
+
+    acc_vec = [t == p for t, p in zip(y_true, y_pred)]
+    acc = sum(acc_vec) / n * 100.0
     f1 = _macro_f1(y_true, y_pred)
-    under = sum(1 for t, p in zip(y_true, y_pred) if p > t or p == 0) / n * 100.0
 
-    # 필수 1차 축 누락률
-    req_cases = [r for r in records if cases_by_id[r["case_id"]].get("required_first_order_checks")]
-    missing_first = 0
-    for r in req_cases:
-        c = cases_by_id[r["case_id"]]
+    # 임상 오류 방향 분리
+    parse_fail = sum(1 for p in y_pred if p == 0) / n * 100.0
+    gen_under = sum(1 for t, p in zip(y_true, y_pred) if p > t and p != 0) / n * 100.0
+    over_triage = sum(1 for t, p in zip(y_true, y_pred) if 1 <= p < t) / n * 100.0
+
+    # 치명적 과소평가율: 실제 중증(1~2등급) 환자 중 3~5등급으로 낮춘 비율
+    crit_pairs = [(t, p) for t, p in zip(y_true, y_pred) if t in (1, 2)]
+    crit_under_vec = [p in (3, 4, 5) for _, p in crit_pairs]
+    crit_under = (sum(crit_under_vec) / len(crit_pairs) * 100.0) if crit_pairs else 0.0
+
+    # 필수 1차 축 누락률 (전체 축 커버리지 vs 핵심 1차 활력징후/트리거 축 커버리지)
+    req_ids = [cid for cid in ordered_ids if cases_by_id[cid].get("required_first_order_checks")]
+    miss_all_vec: list[bool] = []
+    miss_crit_vec: list[bool] = []
+    for cid in req_ids:
+        c = cases_by_id[cid]
+        r = rec_by_id[cid]
         checked = r["parsed"].get("checked_first_order_axes", [])
         steps = r["parsed"].get("reasoning_steps", [])
-        if not all(_axis_covered(ax, checked, steps) for ax in c["required_first_order_checks"]):
-            missing_first += 1
-    missing_first_rate = (missing_first / len(req_cases) * 100.0) if req_cases else 0.0
+        all_ok = all(_axis_covered(ax, checked, steps) for ax in c["required_first_order_checks"])
+        miss_all_vec.append(not all_ok)
 
-    # 근거 규칙 일치율 (2차/예외 결정 케이스 기준)
-    rule_cases = [
-        r for r in records
-        if cases_by_id[r["case_id"]].get("matched_second_order_rule") or cases_by_id[r["case_id"]].get("matched_exception_gate")
+        # 핵심 1차 축: 1차_활력징후가 필수 목록에 있으면 반드시 확인해야 하며, first_order_axis 결정 케이스는 해당 트리거 포함
+        crit_axes = [ax for ax in c["required_first_order_checks"] if ax == "1차_활력징후"]
+        if not crit_axes:
+            crit_axes = c["required_first_order_checks"][:1]
+        crit_ok = all(_axis_covered(ax, checked, steps) for ax in crit_axes)
+        miss_crit_vec.append(not crit_ok)
+
+    missing_first_all = (sum(miss_all_vec) / len(req_ids) * 100.0) if req_ids else 0.0
+    missing_first_crit = (sum(miss_crit_vec) / len(req_ids) * 100.0) if req_ids else 0.0
+
+    # 근거 규칙 일치율
+    rule_ids = [
+        cid for cid in ordered_ids
+        if cases_by_id[cid].get("matched_second_order_rule") or cases_by_id[cid].get("matched_exception_gate")
     ]
-    cited_ok = 0
-    for r in rule_cases:
-        c = cases_by_id[r["case_id"]]
+    cite_vec: list[bool] = []
+    for cid in rule_ids:
+        c = cases_by_id[cid]
+        r = rec_by_id[cid]
         p_lvl = int(r["parsed"].get("final_ktas_level", 0))
-        if p_lvl == c["ground_truth_level"] and _rule_cited_correctly(
+        ok = (p_lvl == c["ground_truth_level"]) and _rule_cited_correctly(
             c, r["parsed"].get("matched_rule_text", ""), r["parsed"].get("reasoning_steps", [])
-        ):
-            cited_ok += 1
-    rule_cite_acc = (cited_ok / len(rule_cases) * 100.0) if rule_cases else 0.0
+        )
+        cite_vec.append(ok)
+    rule_cite_acc = (sum(cite_vec) / len(rule_ids) * 100.0) if rule_ids else 0.0
 
-    avg_in = sum(r["input_tokens"] for r in records) / n
-    avg_out = sum(r["output_tokens"] for r in records) / n
-    avg_tot = avg_in + avg_out
+    in_toks = [float(rec_by_id[cid]["input_tokens"]) for cid in ordered_ids]
+    out_toks = [float(rec_by_id[cid]["output_tokens"]) for cid in ordered_ids]
+    tot_toks = [i + o for i, o in zip(in_toks, out_toks)]
 
     return {
         "n": n,
+        "n_critical": len(crit_pairs),
         "acc": acc,
         "macro_f1": f1,
-        "under_triage": under,
-        "missing_first": missing_first_rate,
+        "crit_under_triage": crit_under,
+        "gen_under_triage": gen_under,
+        "over_triage": over_triage,
+        "parse_fail": parse_fail,
+        "missing_first_all": missing_first_all,
+        "missing_first_crit": missing_first_crit,
         "rule_cite_acc": rule_cite_acc,
-        "avg_in": avg_in,
-        "avg_out": avg_out,
-        "avg_tot": avg_tot,
+        "avg_in": sum(in_toks) / n,
+        "avg_out": sum(out_toks) / n,
+        "avg_tot": sum(tot_toks) / n,
+        "_vecs": {
+            "ordered_ids": ordered_ids,
+            "acc": acc_vec,
+            "crit_under": crit_under_vec,
+            "miss_all": miss_all_vec,
+            "miss_crit": miss_crit_vec,
+            "cite": cite_vec,
+            "in_toks": in_toks,
+            "out_toks": out_toks,
+            "tot_toks": tot_toks,
+        },
     }
+
+
+def _fmt_p(p: float | None) -> str:
+    if p is None:
+        return "N/A"
+    if p < 0.001:
+        return f"`{p:.2e}` (*)"
+    if p < 0.05:
+        return f"`{p:.4f}` (*)"
+    return f"`{p:.4f}`"
 
 
 def build_ab_report(
@@ -365,19 +446,24 @@ def build_ab_report(
     cases_by_id: dict[str, dict[str, Any]],
     model_label: str,
 ) -> str:
-    """전체 및 Hotspot Top 20 비교 표를 포함한 ab_benchmark_results.md를 생성한다."""
+    """전체 / Hotspot Top 20 / 일반·DNR 층화 비교 및 통계 검정 p-value 리포트를 생성한다."""
     orig_all = [r for r in raw_results if r["tree_variant"] == "T_orig"]
     opt_all = [r for r in raw_results if r["tree_variant"] == "T_opt"]
 
     orig_hs = [r for r in orig_all if cases_by_id[r["case_id"]]["cohort"] == "hotspot_top20"]
     opt_hs = [r for r in opt_all if cases_by_id[r["case_id"]]["cohort"] == "hotspot_top20"]
 
+    orig_gen = [r for r in orig_all if cases_by_id[r["case_id"]]["cohort"] == "general"]
+    opt_gen = [r for r in opt_all if cases_by_id[r["case_id"]]["cohort"] == "general"]
+
     def format_section(title: str, r_orig: list[dict[str, Any]], r_opt: list[dict[str, Any]]) -> list[str]:
         m_orig = compute_metrics(r_orig, cases_by_id)
         m_opt = compute_metrics(r_opt, cases_by_id)
         if not m_orig or not m_opt:
-            return [f"## {title}", "- 데이터 부족"]
+            return [f"## {title}", "- 데이터 없음", ""]
 
+        vo = m_orig["_vecs"]
+        vp = m_opt["_vecs"]
         opt_map = {r["case_id"]: int(r["parsed"].get("final_ktas_level", 0)) for r in r_opt}
         orig_map = {r["case_id"]: int(r["parsed"].get("final_ktas_level", 0)) for r in r_orig}
         common_ids = sorted(set(opt_map) & set(orig_map))
@@ -385,22 +471,36 @@ def build_ab_report(
             sum(1 for cid in common_ids if orig_map[cid] == opt_map[cid]) / len(common_ids) * 100.0
             if common_ids else 0.0
         )
-        tok_red = (m_orig["avg_tot"] - m_opt["avg_tot"]) / m_orig["avg_tot"] * 100.0 if m_orig["avg_tot"] else 0.0
-        out_red = (m_orig["avg_out"] - m_opt["avg_out"]) / m_orig["avg_out"] * 100.0 if m_orig["avg_out"] else 0.0
+
+        p_acc = mcnemar_pvalue(vo["acc"], vp["acc"]) if vo["ordered_ids"] == vp["ordered_ids"] else None
+        p_crit_u = mcnemar_pvalue(vo["crit_under"], vp["crit_under"]) if len(vo["crit_under"]) == len(vp["crit_under"]) else None
+        p_miss_all = mcnemar_pvalue(vo["miss_all"], vp["miss_all"]) if len(vo["miss_all"]) == len(vp["miss_all"]) else None
+        p_miss_crit = mcnemar_pvalue(vo["miss_crit"], vp["miss_crit"]) if len(vo["miss_crit"]) == len(vp["miss_crit"]) else None
+        p_cite = mcnemar_pvalue(vo["cite"], vp["cite"]) if len(vo["cite"]) == len(vp["cite"]) else None
+        p_in = wilcoxon_pvalue(vo["in_toks"], vp["in_toks"]) if vo["ordered_ids"] == vp["ordered_ids"] else None
+        p_out = wilcoxon_pvalue(vo["out_toks"], vp["out_toks"]) if vo["ordered_ids"] == vp["ordered_ids"] else None
+        p_tot = wilcoxon_pvalue(vo["tot_toks"], vp["tot_toks"]) if vo["ordered_ids"] == vp["ordered_ids"] else None
+
+        tok_diff_pct = (m_opt["avg_tot"] - m_orig["avg_tot"]) / m_orig["avg_tot"] * 100.0 if m_orig["avg_tot"] else 0.0
+        out_diff_pct = (m_opt["avg_out"] - m_orig["avg_out"]) / m_orig["avg_out"] * 100.0 if m_orig["avg_out"] else 0.0
 
         return [
-            f"## {title} (`N={m_orig['n']}`건, A/B 최종 판정 일치율: `{agree:.2f}%`)",
+            f"## {title} (`N={m_orig['n']}`건, 중증 1~2등급 `{m_orig['n_critical']}`건, A/B 최종 판정 일치율: `{agree:.2f}%`)",
             "",
-            "| 평가 지표 | `T_orig` (원본 평면 트리) | `T_opt` (최적화 계층 트리) | 개선폭 (Delta) |",
-            "| :--- | ---: | ---: | :--- |",
-            f"| **[전제] 최종 등급 정확도 (Accuracy)** | {m_orig['acc']:.2f}% | {m_opt['acc']:.2f}% | {m_opt['acc'] - m_orig['acc']:+.2f}%p |",
-            f"| **[전제] Macro-F1** | {m_orig['macro_f1']:.2f}% | {m_opt['macro_f1']:.2f}% | {m_opt['macro_f1'] - m_orig['macro_f1']:+.2f}%p |",
-            f"| **[전제] 과소평가율 (Under-triage, ↓)** | {m_orig['under_triage']:.2f}% | {m_opt['under_triage']:.2f}% | {m_opt['under_triage'] - m_orig['under_triage']:+.2f}%p |",
-            f"| **[지표 1] 필수 1차 축 누락률 (↓)** | {m_orig['missing_first']:.2f}% | {m_opt['missing_first']:.2f}% | {m_opt['missing_first'] - m_orig['missing_first']:+.2f}%p |",
-            f"| **[지표 1] 근거 규칙 일치율 (Rule Citation, ↑)** | {m_orig['rule_cite_acc']:.2f}% | {m_opt['rule_cite_acc']:.2f}% | {m_opt['rule_cite_acc'] - m_orig['rule_cite_acc']:+.2f}%p |",
-            f"| **[지표 2] 평균 입력 토큰 수** | {m_orig['avg_in']:.1f} | {m_opt['avg_in']:.1f} | {m_opt['avg_in'] - m_orig['avg_in']:+.1f} |",
-            f"| **[지표 2] 평균 출력(추론) 토큰 수 (↓)** | {m_orig['avg_out']:.1f} | {m_opt['avg_out']:.1f} | **{m_opt['avg_out'] - m_orig['avg_out']:+.1f} ({-out_red:+.1f}%)** |",
-            f"| **[지표 2] 환자당 총 토큰 수 (↓)** | {m_orig['avg_tot']:.1f} | {m_opt['avg_tot']:.1f} | **{m_opt['avg_tot'] - m_orig['avg_tot']:+.1f} ({-tok_red:+.1f}%)** |",
+            "| 평가 지표 | `T_orig` (원본) | `T_opt` (최적화) | 변화폭 (Delta) | 통계 검정 ($p$-value) |",
+            "| :--- | ---: | ---: | :--- | :---: |",
+            f"| **[전제] 최종 등급 정확도 (Accuracy)** | {m_orig['acc']:.2f}% | {m_opt['acc']:.2f}% | {m_opt['acc'] - m_orig['acc']:+.2f}%p | {_fmt_p(p_acc)} |",
+            f"| **[전제] Macro-F1** | {m_orig['macro_f1']:.2f}% | {m_opt['macro_f1']:.2f}% | {m_opt['macro_f1'] - m_orig['macro_f1']:+.2f}%p | - |",
+            f"| **[안전] 치명적 과소평가율 (1~2➔3~5등급, ↓)** | {m_orig['crit_under_triage']:.2f}% | {m_opt['crit_under_triage']:.2f}% | {m_opt['crit_under_triage'] - m_orig['crit_under_triage']:+.2f}%p | {_fmt_p(p_crit_u)} |",
+            f"| **[안전] 일반 과소평가율 (`pred > gt`, ↓)** | {m_orig['gen_under_triage']:.2f}% | {m_opt['gen_under_triage']:.2f}% | {m_opt['gen_under_triage'] - m_orig['gen_under_triage']:+.2f}%p | - |",
+            f"| **[안전] 과대평가율 (`pred < gt`, ↓)** | {m_orig['over_triage']:.2f}% | {m_opt['over_triage']:.2f}% | {m_opt['over_triage'] - m_orig['over_triage']:+.2f}%p | - |",
+            f"| **[안전] JSON 파싱 실패율 (↓)** | {m_orig['parse_fail']:.2f}% | {m_opt['parse_fail']:.2f}% | {m_opt['parse_fail'] - m_orig['parse_fail']:+.2f}%p | - |",
+            f"| **[지표 1] 전체 1차 축 누락률 (↓)** | {m_orig['missing_first_all']:.2f}% | {m_opt['missing_first_all']:.2f}% | {m_opt['missing_first_all'] - m_orig['missing_first_all']:+.2f}%p | {_fmt_p(p_miss_all)} |",
+            f"| **[지표 1] 핵심 1차 활력징후 누락률 (↓)** | {m_orig['missing_first_crit']:.2f}% | {m_opt['missing_first_crit']:.2f}% | {m_opt['missing_first_crit'] - m_orig['missing_first_crit']:+.2f}%p | {_fmt_p(p_miss_crit)} |",
+            f"| **[지표 1] 근거 규칙 일치율 (Rule Citation, ↑)** | {m_orig['rule_cite_acc']:.2f}% | {m_opt['rule_cite_acc']:.2f}% | {m_opt['rule_cite_acc'] - m_orig['rule_cite_acc']:+.2f}%p | {_fmt_p(p_cite)} |",
+            f"| **[지표 2] 평균 입력 토큰 수** | {m_orig['avg_in']:.1f} | {m_opt['avg_in']:.1f} | {m_opt['avg_in'] - m_orig['avg_in']:+.1f} | {_fmt_p(p_in)} |",
+            f"| **[지표 2] 평균 출력(추론) 토큰 수 (↓)** | {m_orig['avg_out']:.1f} | {m_opt['avg_out']:.1f} | {m_opt['avg_out'] - m_orig['avg_out']:+.1f} ({out_diff_pct:+.1f}%) | {_fmt_p(p_out)} |",
+            f"| **[지표 2] 환자당 총 토큰 수 (↓)** | {m_orig['avg_tot']:.1f} | {m_opt['avg_tot']:.1f} | **{m_opt['avg_tot'] - m_orig['avg_tot']:+.1f} ({tok_diff_pct:+.1f}%)** | {_fmt_p(p_tot)} |",
             "",
         ]
 
@@ -408,6 +508,7 @@ def build_ab_report(
         "# KTAS `T_orig` vs `T_opt` LLM A/B 벤치마크 평가 결과 리포트",
         "",
         f"- **평가 모델**: `{model_label}` (`temperature=0.0`, 결정론적 생성)",
+        f"- **통계 검정**: 이진 지표 `McNemar's test`, 토큰 수 `Wilcoxon signed-rank test` (`*`: $p < 0.05$)",
         f"- **완료된 추론 기록**: `T_orig` {len(orig_all)}건 / `T_opt` {len(opt_all)}건",
         "",
         "---",
@@ -415,7 +516,10 @@ def build_ab_report(
         *format_section("1. 전체 평가 벤치마크 비교", orig_all, opt_all),
         "---",
         "",
-        *format_section("2. 병목 Hotspot Top 20 주호소 단독 비교", orig_hs, opt_hs),
+        *format_section("2. 병목 Hotspot Top 20 주호소 군 비교", orig_hs, opt_hs),
+        "---",
+        "",
+        *format_section("3. 일반 / DNR 예외 주호소 군 비교", orig_gen, opt_gen),
     ]
     return "\n".join(lines) + "\n"
 
@@ -423,15 +527,15 @@ def build_ab_report(
 def main() -> None:
     parser = argparse.ArgumentParser(description="KTAS T_orig vs T_opt LLM A/B 벤치마크 실행기")
     parser.add_argument("--backend", choices=["auto", "hf", "openai"], default="auto")
-    parser.add_argument("--base_url", default=None, help="OpenAI 호환 API 주소 (예: http://localhost:8000/v1)")
+    parser.add_argument("--base_url", default=None, help="OpenAI 호환 API 주소")
     parser.add_argument("--model", default="", help="모델 ID 또는 로컬 HuggingFace 모델 경로")
     parser.add_argument("--cases", default=str(EXP_ROOT / "data" / "benchmark" / "ktas_eval_cases.json"))
     parser.add_argument("--raw-dir", default=str(EXP_ROOT / "data" / "raw"))
     parser.add_argument("--opt-json", default=str(EXP_ROOT / "data" / "optimized" / "ktas_optimized_tree.json"))
     parser.add_argument("--out-jsonl", default=str(EXP_ROOT / "data" / "benchmark" / "ab_raw_results.jsonl"))
     parser.add_argument("--out-report", default=str(EXP_ROOT / "reports" / "ab_benchmark_results.md"))
-    parser.add_argument("--limit", type=int, default=0, help="상위 N건만 실행 (0이면 전체 300건)")
-    parser.add_argument("--report-only", action="store_true", help="추론 없이 기존 ab_raw_results.jsonl로 리포트만 재생성")
+    parser.add_argument("--limit", type=int, default=0, help="상위 N건만 실행 (0이면 전체)")
+    parser.add_argument("--report-only", action="store_true", help="추론 없이 기존 jsonl로 리포트만 재생성")
     args = parser.parse_args()
 
     with Path(args.cases).open("r", encoding="utf-8") as f:
@@ -461,7 +565,6 @@ def main() -> None:
             opt_list = json.load(f)["complaints"]
         opt_map = {(c["context"], c["nacrs_code"], c["name"]): c for c in opt_list}
 
-        # 실행할 작업 목록 구성
         tasks: list[tuple[dict[str, Any], str, str]] = []
         for c in cases:
             key = (c["context"], c["nacrs_code"], c["complaint_name"])
@@ -496,7 +599,6 @@ def main() -> None:
                     f.flush()
                     existing_records.append(rec)
 
-    # 현재 케이스셋에 해당하는 레코드만 필터링해 채점
     filtered_records = [r for r in existing_records if r["case_id"] in cases_by_id]
     report_md = build_ab_report(filtered_records, cases_by_id, model_label)
     Path(args.out_report).write_text(report_md, encoding="utf-8")
@@ -505,4 +607,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
